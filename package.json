@@ -1,0 +1,21 @@
+{
+  "name": "auction",
+  "version": "1.0.0",
+  "description": "Online Auction System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "chalk": "^2.4.2",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.1",
+    "mongoose": "^5.5.0",
+    "mongoose-double": "0.0.1",
+    "morgan": "^1.9.1",
+    "validator": "^10.11.0"
+  }
+}
