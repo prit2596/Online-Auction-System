@@ -26,7 +26,11 @@ var itemsSchema = new Schema({
 	bid_price: [
 	{
 		starting_bid : {type: Double}
-	}]
+	}],
+	archive:{
+        type:Boolean,
+        default: false
+    } 
 });
 
 module.exports = itemsSchema;

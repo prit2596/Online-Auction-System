@@ -11,7 +11,7 @@ itemsSchema.statics = {
         this.find(query, cb);
     },
 
-    getByEmail: function(query, cb){
+    getNyName: function(query, cb){
         this.findOne(query, cb);
     },
 
