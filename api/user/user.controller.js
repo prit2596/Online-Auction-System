@@ -82,7 +82,7 @@ exports.createUser = [
 
 
 exports.getUsers = function(req, res, next){
-    Users.get({}, function(err, users){
+    Users.get({archive : 0}, function(err, users){
         if(err){
             return res.json({
                 error: err
@@ -96,7 +96,7 @@ exports.getUsers = function(req, res, next){
 }
 
 exports.getUserByEmail = function(req, res, next){
-    Users.getByEmail({email: req.params.email}, function(err, user){
+    Users.getByEmail({email: req.params.email,archive:0}, function(err, user){
         if(err){
             return res.json({
                 error: err
@@ -121,7 +121,7 @@ exports.updateUser = [
             })
         }
         else{
-            Users.getByEmail({email: req.params.email}, function(err, user){
+            Users.getByEmail({email: req.params.email, archive:0}, function(err, user){
                 if(err){
                     return res.json({
                         error: err

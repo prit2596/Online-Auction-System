@@ -20,7 +20,10 @@ userSchema.statics = {
     },
 
     delete: function(query, cb){
-        this.findOneAndDelete(query, cb);
+        deleteData= {
+            archive : true
+        }
+        this.findOneAndUpdate(query,{$set:deleteData}, cb);
     }
 }
 

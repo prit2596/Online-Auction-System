@@ -45,7 +45,7 @@ exports.createItem = [
 ];
 
 exports.getItems = function(req, res, next){
-    Items.get({}, function(err, items){
+    Items.get({archive:0}, function(err, items){
         if(err){
             return res.json({
                 error: err
@@ -59,7 +59,7 @@ exports.getItems = function(req, res, next){
 }
 
 exports.getItemByName = function(req, res, next){
-    Users.getByName({email: req.params.name}, function(err, items){
+    Items.getByName({name: req.params.name,archive:0}, function(err, items){
         if(err){
             return res.json({
                 error: err
@@ -83,7 +83,7 @@ exports.updateItem = [
 			})
 		}
 		else{
-			Items.getByName({name:req.body.name},function(err,item){
+			Items.getByName({name:req.body.name,archive:0},function(err,item){
 				if(err){
 					return res.json({
 						error:err
