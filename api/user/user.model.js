@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-require('mongoose-double')(mongoose);
+// require('mongoose-double')(mongoose);
 
-var SchemaType = mongoose.Schema.Types;
+// var SchemaType = mongoose.Schema.Types;
 var Schema = mongoose.Schema;
 ObjectId = Schema.ObjectId;
 var userSchema = new Schema({
@@ -37,7 +37,7 @@ var userSchema = new Schema({
             type: ObjectId
         },
         price: {
-            type: SchemaType.Double
+            type: Number
         }
     }],
     wish_list: [{

@@ -1,113 +1,148 @@
+/** create separate api for updating and deleting images
+1. update by price
+2. update imgae
+3. basically many updates
+4. get item by name or description like query
+
+*/
+
 var Items = require('./items.dao');
-var {check, validationResult} = require('express-validator/check');
+var { check, validationResult } = require('express-validator/check');
 
 exports.createItem = [
-	check('name').withMessage('Name required');
-	check('desc').withMessage('description required');
-	(req,res,next)=>{
+	check('name').withMessage('Name required'),
+	check('desc').withMessage('description required'),
+	check('category').withMessage('Category required'),
+	check('start_time').withMessage('Start time required'),
+	check('end_time').withMessage('End time required'),
+	check('starting_bid').withMessage('Starting Bid required'),
+
+	(req, res, next) => {
 		const error = validationResult(req);
-		if(!error.isEmpty()){
+		if (!error.isEmpty()) {
 			return res.json({
-				error:errors.array()
+				error: errors.array()
 			})
 		}
-		else{
-			Items.getByName({name:req.body.name},function(err,item){
-				if(err){
-					return res.json({
-						error:err
-					})
-				}
-				else{
-					val item = {
-						name: req.body.name,
-						desc: req.body.desc,
-						image: req.body.images,
-						category: req.body.cat,
-						time.start_time: req.body.start,
-						time.end_time : req.body.end,
-						bid_price.starting_bid: req.price.s_bid 
+		else {
+			console.log(Date.now());
+			var start_time = new Date(req.body.start_time);
+			var end_time = new Date(req.body.end_time);
+
+			if (start_time <= Date.now()) {
+				res.json({
+					error: "Start time cannot be smaller than present time"
+				})
+			}
+			else if (end_time <= start_time) {
+				res.json({
+					error: "End time cannot be smaller than start time"
+				})
+			}
+
+			else {
+				var item = {
+					name: req.body.name,
+					desc: req.body.desc,
+					image: {path: req.file.path},
+					category: req.body.category,
+					time: {
+						start_time: start_time,
+						end_time: end_time
+					},
+					bid_price: {
+						starting_bid: req.body.starting_bid
 					}
-					Items.create(item,function(err,user){
-						if(err){
-							return next(res.json({
-								error:err
-							}));
-						}
-						return next(res.json({
-                            message: "Item create successfully"
-                        }));
-					})
 				}
-			})
+
+				Items.create(item, function (err, item) {
+					if (err) {
+						res.json({
+							error: err
+						})
+					}
+
+					res.json({
+						message: "Item created successfully"
+					})
+				})
+			}
 		}
 	}
 ];
 
-exports.getItems = function(req, res, next){
-    Items.get({archive:0}, function(err, items){
-        if(err){
-            return res.json({
-                error: err
-            })
-        }
+exports.getItems = function (req, res, next) {
+	Items.get({ archive: 0 }, function (err, items) {
+		if (err) {
+			return res.json({
+				error: err
+			})
+		}
 
-        return res.json({
-            items: items
-        })
-    })
+		return res.json({
+			items: items
+		})
+	})
 }
 
-exports.getItemByName = function(req, res, next){
-    Items.getByName({name: req.params.name,archive:0}, function(err, items){
-        if(err){
-            return res.json({
-                error: err
-            })
-        }
+// exports.getItemByName = function (req, res, next) {
+// 	Items.getByName({ name: req.params.name, archive: 0 }, function (err, items) {
+// 		if (err) {
+// 			return res.json({
+// 				error: err
+// 			})
+// 		}
 
-        return res.json({
-            items: items
-        })
-    })
-}
+// 		return res.json({
+// 			items: items
+// 		})
+// 	})
+// }
 
 exports.updateItem = [
-    check('name').withMessage('Name required');
-	check('desc').withMessage('description required');
-	(req,res,next)=>{
+	check('name').withMessage('Name required'),
+	check('desc').withMessage('description required'),
+	check('category').withMessage('Category required'),
+	check('start_time').withMessage('Start time required'),
+	check('end_time').withMessage('End time required'),
+	check('starting_bid').withMessage('Starting Bid required'),
+	(req, res, next) => {
 		const error = validationResult(req);
-		if(!error.isEmpty()){
+		if (!error.isEmpty()) {
 			return res.json({
-				error:errors.array()
+				error: errors.array()
 			})
 		}
-		else{
-			Items.getByName({name:req.body.name,archive:0},function(err,item){
-				if(err){
+		else {
+			Items.getById({ _id: req.params.id, archive: 0 }, function (err, item) {
+				if (err) {
 					return res.json({
-						error:err
+						error: err
 					})
 				}
-				else{
-					val item = {
+				else {
+					var item = {
 						name: req.body.name,
 						desc: req.body.desc,
-						image: req.body.images,
-						category: req.body.cat,
-						time.start_time: req.body.start,
-						time.end_time : req.body.end,
-						bid_price.starting_bid: req.price.s_bid 
+						// image: [req.file.path],
+						category: req.body.category,
+						time: {
+							start_time: req.body.start_time,
+							end_time: req.body.end_time
+						},
+						bid_price: {
+							starting_bid: req.body.starting_bid
+						}
 					}
-					Items.create(item,function(err,user){
-						if(err){
+					Items.update({ _id: req.params.id }, item, function (err, user) {
+						if (err) {
 							return next(res.json({
-								error:err
+								error: err
 							}));
 						}
 						return next(res.json({
-                            message: "Item updated successfully"
-                        }));
+							message: "Item updated successfully"
+						}));
 					})
 				}
 
@@ -116,29 +151,29 @@ exports.updateItem = [
 	}
 ];
 
-exports.deleteItem = function(req, res, next){
-    if(req.params.name == null){
-        return res.json({
-            error: "Provide Name for item"
-        })
-    }
+exports.deleteItem = function (req, res, next) {
+	if (req.params.id == null) {
+		return res.json({
+			error: "Provide Id for item"
+		})
+	}
 
-    Items.delete({email: req.params.name}, function(err, item){
-        if(err){
-            return res.json({
-                error: err
-            })
-        }
-        
-        if(item == null){
-            return res.json({
-                message: "Item doesn't exist"
-            })
-        }
-        else{
-            return res.json({
-                message: "Item deleted successfully"    
-            })
-        }
-    })
+	Items.delete({ _id: req.params.id }, function (err, item) {
+		if (err) {
+			return res.json({
+				error: err
+			})
+		}
+
+		if (item === null && Object.keys(item).length !== 0) {
+			return res.json({
+				message: "Item doesn't exist"
+			})
+		}
+		else {
+			return res.json({
+				message: "Item deleted successfully"
+			})
+		}
+	})
 }

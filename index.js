@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 
 //user routes
 var userRoutes = require('./api/user/user.routes');
+var categoryRoutes = require('./api/category/category.routes');
+var itemsRoutes = require('./api/items/items.routes');
 var properties = require('./config/properties');
 var db = require('./config/database');
 var app = express();
@@ -21,6 +23,7 @@ db();
 app.use(log);
 app.use(bodyParserJSON);
 app.use(bodyParserURLEncoded);
+app.use(express.static('uploads'));
 
 // Error handling
 // app.use(function(req, res, next) {
@@ -33,10 +36,11 @@ app.use(bodyParserURLEncoded);
 
 
 // use express router
-app.use('/api',router);
-
+app.use('/api/user', userRoutes);
+app.use('/api/category',categoryRoutes);
+app.use('/api/items',itemsRoutes);
 //call heros routing
-userRoutes(router);
+// userRoutes(router);
 
 app.listen(properties.PORT, (req, res) =>{
     console.log(` Server is running on ${properties.PORT} port`);

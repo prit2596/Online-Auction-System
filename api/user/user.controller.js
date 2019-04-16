@@ -61,6 +61,7 @@ exports.createUser = [
                         email: req.body.email,
                         password: hashPassword,
                         address: req.body.address,
+                        profilePic: req.file.filename 
                     }
             
                     Users.create(user, function(err, user){

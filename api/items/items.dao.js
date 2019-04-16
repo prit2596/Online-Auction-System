@@ -11,7 +11,7 @@ itemsSchema.statics = {
         this.find(query, cb);
     },
 
-    getNyName: function(query, cb){
+    getById: function(query, cb){
         this.findOne(query, cb);
     },
 
@@ -21,7 +21,7 @@ itemsSchema.statics = {
 
     delete: function(query, cb){
         deleteData ={
-            archive:0
+            archive:true
         }
         this.findOneAndUpdate(query,{$set:deleteData}, cb);
     }
