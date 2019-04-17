@@ -10,13 +10,9 @@ var properties = require('./config/properties');
 var db = require('./config/database');
 var app = express();
 
-
 //configure bodyParser
 var bodyParserJSON = bodyParser.json();
 var bodyParserURLEncoded = bodyParser.urlencoded({extended: true});
-
-//initialize express router
-var router = express.Router();
 
 //call database connectivity
 db();
@@ -25,23 +21,36 @@ app.use(bodyParserJSON);
 app.use(bodyParserURLEncoded);
 app.use(express.static('uploads'));
 
-// Error handling
-// app.use(function(req, res, next) {
-//     res.setHeader("Access-Control-Allow-Origin", "*");
-//      res.setHeader("Access-Control-Allow-Credentials", "true");
-//      res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-//      res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Origin,Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,Authorization");
-//    next();
-//  });
-
-
 // use express router
 app.use('/api/user', userRoutes);
 app.use('/api/category',categoryRoutes);
 app.use('/api/items',itemsRoutes);
-//call heros routing
-// userRoutes(router);
+
+
+//socket
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var live_auction = require('./socket/live.controller');
+var bid = require('./socket/bid.controller');
+io.sockets.on('connection',function(socket){
+    socket.on('join_auction', function(data){
+        //itemid, userid, socketid
+        live_auction.addUser(io,socket,data);
+    });
+    socket.on('new_bid', function(data){
+        bid.addBid(io, socket, data);
+    });
+    socket.on('disconnect', function(data){
+        live_auction.deleteUser(io,socket, data);
+    });
+})
+
+
+
+
+
+
 
 app.listen(properties.PORT, (req, res) =>{
     console.log(` Server is running on ${properties.PORT} port`);
-})
+});

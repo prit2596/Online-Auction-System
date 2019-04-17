@@ -20,14 +20,14 @@ var itemsSchema = new Schema({
 		type: String,
 		required: true
 	},
-	time:[{
+	time:{
 		start_time :{type: Date, required:true},
 		end_time : {type: Date, required: true}
-	}],
-	bid_price: [{
+	},
+	bid_price: {
 		starting_bid : {type: Number, required: true},
 		final_price: {type: Number, default: 0}
-	}],
+	},
 	archive:{
         type:Boolean,
         default: false

@@ -182,3 +182,17 @@ exports.deleteUser = function(req, res, next){
         }
     })
 }
+
+exports.updateItems = function(data){
+    var itemBought = {
+        item: data.itemId,
+        price: data.price
+    }
+    Users.getByEmail({email: data.userId}, function(err, user){
+        if(err) throw err;
+        user.items_bought.push(itemBought);
+        Users.update({email: data.userId}, user, function(err, user){
+            if(err) throw err;
+        })
+    })
+}

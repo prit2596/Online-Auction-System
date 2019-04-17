@@ -178,3 +178,22 @@ exports.deleteItem = function (req, res, next) {
 		}
 	})
 }
+
+exports.getStartBid = function(itemId){
+	Items.getById({_id: itemId}, function(err, item){
+		if(err) throw err;
+		return item.bid_price.starting_bid;
+	})
+}
+
+exports.itemSold = function(data){
+	Items.getById({itemId: data.itemId}, function(err, item){
+		if(err) throw err;
+		item.bid_price.final_price = data.price;
+		item.sold = true;
+
+		Items.update({itemId: data.itemId}, item, function(err, item){
+			if(err) throw err;
+		});
+	});
+}
