@@ -185,7 +185,7 @@ exports.getStartBid = function(itemId){
 		return item.bid_price.starting_bid;
 	})
 }
-
+//to set the final price of item after auction end
 exports.itemSold = function(data){
 	Items.getById({itemId: data.itemId}, function(err, item){
 		if(err) throw err;
@@ -196,4 +196,53 @@ exports.itemSold = function(data){
 			if(err) throw err;
 		});
 	});
+}
+
+exports.checkItemSold = function(data){
+	Items.getById({itemId: data.itemId}, function(err, item){
+		if(err) throw err;
+		return item.sold;
+	})
+}
+
+exports.getLiveItems = function(req, res, next){
+	var query = {
+		time : {
+			start_time : {$lt : Date.now()},
+			end_time : {$gt : Date.now()},
+		},
+		archive: false,
+		sold: false
+	}
+
+	Items.get(query, function(err, items){
+		if(err){
+			res.json({
+				error: err
+			})
+		}
+
+		res.json({
+			items: items
+		})
+	})
+}
+
+exports.getSoldItems = function(req, res, next){
+	var query = {
+		archive: false,
+		sold: true
+	}
+
+	Items.get(query, function(err, items){
+		if(err){
+			res.json({
+				error: err
+			})
+		}
+
+		res.json({
+			items: items
+		})
+	})
 }

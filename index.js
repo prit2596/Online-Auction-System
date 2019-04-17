@@ -31,6 +31,7 @@ app.use('/api/items',itemsRoutes);
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var live_auction = require('./socket/live.controller');
+var timeout  = require('./socket/timeout.controller');
 var bid = require('./socket/bid.controller');
 io.sockets.on('connection',function(socket){
     socket.on('join_auction', function(data){
@@ -39,6 +40,9 @@ io.sockets.on('connection',function(socket){
     });
     socket.on('new_bid', function(data){
         bid.addBid(io, socket, data);
+    });
+    socket.on('timeout', function(data){
+        timeout.auctionEnd(io, socket, data);
     });
     socket.on('disconnect', function(data){
         live_auction.deleteUser(io,socket, data);

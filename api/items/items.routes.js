@@ -37,5 +37,5 @@ router.get('/getItems', Items.getItems);
 //router.get('/getUser/:name', Items.getItemByName);
 router.put('/updateItem/:id', Items.updateItem);
 router.delete('/deleteItem/:id', Items.deleteItem)
-
+router.get('/liveItems', Items.getLiveItems);
 module.exports = router;

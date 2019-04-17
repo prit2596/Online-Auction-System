@@ -51,6 +51,7 @@ exports.addBid = function (io, socket, data) {
 exports.getHighestBid = function (itemId) {
     bid.getAuction({ itemId: itemId }, function (err, auction) {
         if (err) throw err;
+        if(auction === null) return null;
         return auction.users[auction.users.length - 1];
     })
 }
