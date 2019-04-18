@@ -3,7 +3,7 @@ var item = require('../api/items/items.controller');
 var liveAuction = require('./live.controller');
 var liveDao = require('./live.dao');
 
-
+//
 createAuction = function (io, socket, data) {
     var user = {
         userId: data.userId,
