@@ -1,0 +1,117 @@
+<div class="container">
+
+  <h1>Sign Up!</h1>
+  <form [formGroup]="signUpForm" novalidate>
+    <div class="form-group">
+      <label for="first_name">First Name:</label>
+      <input type="text" class="form-control" id = "first_name" name="first_name" formControlName="first_name" placeholder="John" required #first_name >
+      <div class="alert alert-danger" *ngIf="signUpForm.controls['first_name'].invalid && (signUpForm.controls['first_name'].dirty || signUpForm.controls['first_name'].touched)">
+        <div *ngIf="signUpForm.controls['first_name'].errors?.required">First Name required.</div>
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last Name:</label>
+        <input type="text" class="form-control" id = "last_name" name="last_name" formControlName="last_name" placeholder="Doe"required #last_name >
+        <div class="alert alert-danger" *ngIf="signUpForm.controls['last_name'].invalid && (signUpForm.controls['last_name'].dirty || signUpForm.controls['last_name'].touched)">
+          <div *ngIf="signUpForm.controls['first_name'].errors?.required">Last Name required.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" [ngClass]="{emailError: userExistsFlag}" (change)="checkEmail($event)" id = "email" name="email" formControlName="email" placeholder="john@doe.com" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required #email >
+        <div class="alert alert-danger" *ngIf="(userExistsFlag || signUpForm.controls['email'].invalid) && (signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)">
+          <div *ngIf="signUpForm.controls['email'].errors?.required">Email required.</div>
+          <div *ngIf="signUpForm.controls['email'].errors?.pattern">Invalid Email</div>
+          <div *ngIf="userExistsFlag">User exists</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id = "password" name="password" formControlName="password" required #password >
+        <div class="alert alert-danger" *ngIf="signUpForm.controls['password'].invalid && (signUpForm.controls['password'].dirty || signUpForm.controls['password'].touched)">
+          <div *ngIf="signUpForm.controls['password'].errors?.required">Password required.</div>
+          <div *ngIf="signUpForm.controls['password'].errors?.pattern">
+            <ul>
+              <li>At least 8 characters in length</li>
+              <li>Lowercase letters</li>
+              <li>Uppercase letters</li>
+              <li>Numbers</li>
+              <li>Special characters</li>
+            </ul>
+          </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" class="form-control" id = "confirm_password" name="confirm_password" formControlName="confirm_password"  #confirm_password pattern="{{password.value}}"  required>
+        <div class="alert alert-danger" *ngIf="signUpForm.controls['confirm_password'].invalid && (signUpForm.controls['confirm_password'].dirty || signUpForm.controls['confirm_password'].touched)">
+          <div *ngIf="signUpForm.controls['confirm_password'].errors?.required">Confirm Password required.</div>
+          <div *ngIf="signUpForm.controls['confirm_password'].errors?.pattern">Confirm Password doesn't match.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="textarea" class="form-control" id = "address" name="address" formControlName="address" placeholder="7575 Frankford ...." required #address >
+        <div class="alert alert-danger" *ngIf="signUpForm.controls['address'].invalid && (signUpForm.controls['address'].dirty || signUpForm.controls['address'].touched)">
+          <div *ngIf="signUpForm.controls['address'].errors?.required">Address required.</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="profilePic">Profile Pic:</label>
+        <input type="file" name="profilePic" id="profilePic" (change)="onFileChange($event)" #profilePic/>
+    </div>
+    <div class="form-group">
+        <button (click)="addUser(first_name.value, last_name.value, email.value, password.value, confirm_password.value, address.value)" [disabled]="userExistsFlag || !imageFlag || signUpForm.pristine || signUpForm.invalid" class="btn btn-success">Register</button>
+    </div>
+  </form>
+
+</div>
+
+
+
+<!-- <div class="container">
+  <h1>Sign Up!</h1>
+  <form (ngSubmit)="onSubmit()" #signUpForm = "ngForm" >
+    <div class="form-group">
+      <label for="first_name">First Name:</label>
+      <input type="text" class="form-control" id="first_name" placeholder="John" required [(ngModel)] = "user.first_name" name="first_name" #first_name = "ngModel">
+      <div [hidden]="first_name.valid || first_name.pristine" class="alert alert-danger"> First Name is required</div>
+    </div>
+    <div class="form-group">
+      <label for="last_name">Last Name:</label>
+      <input type="text" class="form-control" id="last_name" placeholder="Doe" required [(ngModel)] = "user.last_name" name="last_name" #last_name = "ngModel">
+      <div [hidden]="last_name.valid || last_name.pristine" class="alert alert-danger"> Last Name is required</div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" id="email" placeholder="john@doe.com"  required [(ngModel)] = "user.email" name="email" #email = "ngModel"> 
+      <div class="alert alert-danger" *ngIf="email.touched && !email.valid">
+        <div *ngIf="email.errors?.required">Email is required</div>
+        <div *ngIf="email.errors?.email">Invalid Email</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" id="password" required [(ngModel)] = "user.password" name="password" #password = "ngModel">
+      <div [hidden]="password.valid || password.pristine" class="alert alert-danger"> Password is required</div>
+    </div>
+    <div class="form-group">
+      <label for="confirm_password">Confirm Password</label>
+      <input type="password" class="form-control" id="confirm_password" required [(ngModel)] = "user.confirm_password" name="confirm_password" #confirm_password = "ngModel" pattern = "{{ password.value }}">
+      <div class="alert alert-danger" *ngIf="confirm_password.touched && !confirm_password.valid">
+        Confirm Password dont match.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input type="textarea" class="form-control" id="address" placeholder="7575 Frankford....." required [(ngModel)] = "user.address" name="address" #address = "ngModel">
+      <div [hidden]="address.valid || address.pristine" class="alert alert-danger"> Address is required</div>
+    </div>
+    <div class="form-group">
+      <label for="profilePic">Upload Profile Pic</label>
+      <input type="file" class="form-control" id="profilePic" required [(ngModel)] = "user.profilePic" name="profilePic" #profilePic = "ngModel">
+      <div [hidden]="profilePic.valid || profilePic.pristine" class="alert alert-danger"> Profile Pic required</div>
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!signUpForm.form.valid ">Submit</button>
+  </form>
+</div> -->

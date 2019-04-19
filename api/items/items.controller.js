@@ -27,9 +27,9 @@ exports.createItem = [
 		}
 		else {
 			console.log(Date.now());
-			var start_time = new Date(req.body.start_time);
-			var end_time = new Date(req.body.end_time);
-
+			var start_time = new Date(req.body.start_time).getTime();
+			var end_time = new Date(req.body.end_time).getTime();
+			console.log(start_time +" "+ end_time);
 			if (start_time <= Date.now()) {
 				res.json({
 					error: "Start time cannot be smaller than present time"
@@ -40,7 +40,6 @@ exports.createItem = [
 					error: "End time cannot be smaller than start time"
 				})
 			}
-
 			else {
 				var item = {
 					name: req.body.name,
@@ -215,6 +214,8 @@ exports.getLiveItems = function(req, res, next){
 		sold: false
 	}
 
+	console.log(Date.now());
+	
 	Items.get(query, function(err, items){
 		if(err){
 			res.json({
