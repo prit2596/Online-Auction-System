@@ -29,7 +29,7 @@ exports.createItem = [
 			console.log(Date.now());
 			var start_time = new Date(req.body.start_time);
 			var end_time = new Date(req.body.end_time);
-
+			//console.log(start_time + "  " + end_time);
 			if (start_time <= Date.now()) {
 				res.json({
 					error: "Start time cannot be smaller than present time"
