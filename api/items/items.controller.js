@@ -17,7 +17,6 @@ exports.createItem = [
 	check('start_time').withMessage('Start time required'),
 	check('end_time').withMessage('End time required'),
 	check('starting_bid').withMessage('Starting Bid required'),
-
 	(req, res, next) => {
 		const error = validationResult(req);
 		if (!error.isEmpty()) {
@@ -27,9 +26,10 @@ exports.createItem = [
 		}
 		else {
 			console.log(Date.now());
-			var start_time = new Date(req.body.start_time);
-			var end_time = new Date(req.body.end_time);
-			//console.log(start_time + "  " + end_time);
+			var start_time = new Date(req.body.start_time).getTime();
+			var end_time = new Date(req.body.end_time).getTime();
+			console.log(start_time + "  " + end_time);
+			//console.log(req.body);
 			if (start_time <= Date.now()) {
 				res.json({
 					error: "Start time cannot be smaller than present time"
@@ -100,6 +100,20 @@ exports.getItems = function (req, res, next) {
 // 	})
 // }
 
+exports.getById = function (req, res, next) {
+ 	Items.getById({ _id: req.params.id, archive: 0 }, function (err, items) {
+ 		if (err) {
+ 			return res.json({
+ 				error: err
+ 			})
+ 		}
+ 		console.log(items)
+ 		return res.json({
+ 			items: items
+ 		})
+ 	})
+ }
+
 exports.updateItem = [
 	check('name').withMessage('Name required'),
 	check('desc').withMessage('description required'),
@@ -141,6 +155,7 @@ exports.updateItem = [
 								error: err
 							}));
 						}
+						console.log("successfully")
 						return next(res.json({
 							message: "Item updated successfully"
 						}));
@@ -207,15 +222,14 @@ exports.checkItemSold = function(data){
 
 exports.getLiveItems = function(req, res, next){
 	var query = {
-		time : {
-			start_time : {$lt : Date.now()},
-			end_time : {$gt : Date.now()},
-		},
+		"time.start_time" : {$lt : new Date()},
+		"time.end_time" : {$gt : new Date()},
 		archive: false,
 		sold: false
 	}
-
+	console.log(new Date())
 	Items.get(query, function(err, items){
+		console.log(items);
 		if(err){
 			res.json({
 				error: err
@@ -235,6 +249,27 @@ exports.getSoldItems = function(req, res, next){
 	}
 
 	Items.get(query, function(err, items){
+		if(err){
+			res.json({
+				error: err
+			})
+		}
+
+		res.json({
+			items: items
+		})
+	})
+}
+
+exports.getUpcomingItems= function(req, res, next){
+	var query = {
+		"time.start_time" : {$gt : new Date()},
+		archive: false,
+		sold: false
+	}
+	console.log(new Date())
+	Items.get(query, function(err, items){
+		console.log(items);
 		if(err){
 			res.json({
 				error: err

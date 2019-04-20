@@ -3,6 +3,7 @@ var log = require('morgan')('dev');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+
 //user routes
 var userRoutes = require('./api/user/user.routes');
 var categoryRoutes = require('./api/category/category.routes');
@@ -21,7 +22,7 @@ app.use(log);
 app.use(cors());
 app.use(bodyParserJSON);
 app.use(bodyParserURLEncoded);
-app.use(express.static('uploads'));
+app.use('/uploads',express.static('uploads'));
 
 // use express router
 app.use('/api/user', userRoutes);

@@ -34,8 +34,10 @@ var upload = multer({ storage: storage,
 
 router.post('/create',upload.single('image'), Items.createItem);
 router.get('/getItems', Items.getItems);
-//router.get('/getUser/:name', Items.getItemByName);
-router.put('/updateItem/:id', Items.updateItem);
+router.get('/getItem/:id', Items.getById);
+router.put('/updateItem/:id',upload.single('image'), Items.updateItem);
 router.delete('/deleteItem/:id', Items.deleteItem)
 router.get('/liveItems', Items.getLiveItems);
+router.get('/upcomingItems', Items.getUpcomingItems);
+router.get('/getsoldItems', Items.getSoldItems);
 module.exports = router;
