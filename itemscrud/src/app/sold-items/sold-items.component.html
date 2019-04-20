@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>Sold Items</h1>
+  <hr>
+  <div class="row">
+      <div *ngFor = "let item of items" class ="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{{imageUrl}}{{item.image[0].path}}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{item.name}}</h5>
+              <hr>
+              <p class="card-text"></p><span class ="label label-primary">${{item.bid_price.final_price}}</span>
+              <hr>
+              <p class="card-text">{{item.desc}}</p>
+              
+            </div>
+          </div>
+          <br>
+      </div>
+  </div>
+</div>

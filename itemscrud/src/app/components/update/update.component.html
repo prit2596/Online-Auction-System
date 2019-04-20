@@ -1,0 +1,67 @@
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="angForm" novalidate>
+      <div class="form-group">
+        <label class="col-md-4">Item Name</label>
+        <input type="text" class="form-control" name="name" formControlName="name" #name [(ngModel)] = "item.name"/>
+      </div>
+      <div *ngIf="angForm.controls['name'].invalid && (angForm.controls['name'].dirty || angForm.controls['name'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['name'].errors.required">
+          Item Name is required.
+        </div>
+      </div> 
+      <div class="form-group">
+        <label class="col-md-4">Item Description</label>
+        <input type="text" class="form-control" name="desc" formControlName="desc" #desc  [(ngModel)] = "item.desc" />
+        </div>
+        <div *ngIf="angForm.controls['desc'].invalid && (angForm.controls['desc'].dirty || angForm.controls['desc'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['desc'].errors.required">
+          Item Description is required.
+        </div>
+      </div> 
+        <div class="form-group">
+        <label class="col-md-4">Category</label>
+        <input type="text" class="form-control" name="category" formControlName="category" #category [(ngModel)] = "item.category"/>
+        </div>
+        <div *ngIf="angForm.controls['category'].invalid && (angForm.controls['category'].dirty || angForm.controls['category'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['category'].errors.required">
+          Item Category is required.
+        </div>
+      </div> 
+        <div class="form-group">
+        <label class="col-md-4">Start Time</label>
+        <input type="text" class="form-control" name="start_time" formControlName="start_time" #start_time  [(ngModel)] = "item.time.start_time"/>
+        </div>
+        <div *ngIf="angForm.controls['start_time'].invalid && (angForm.controls['start_time'].dirty || angForm.controls['start_time'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['start_time'].errors.required">
+          Starting Time for bid is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4">End Time</label>
+        <input type="text" class="form-control" name="end_time" formControlName="end_time" #end_time  [(ngModel)] = "item.time.end_time"/>
+        </div>
+        <div *ngIf="angForm.controls['end_time'].invalid && (angForm.controls['end_time'].dirty || angForm.controls['end_time'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['end_time'].errors.required">
+          End Time for bid is required.
+        </div>
+      </div>
+        <div class="form-group">
+        <label class="col-md-4">Bid Price</label>
+        <input type="text" class="form-control" name="starting_bid" formControlName="starting_bid" #starting_bid  [(ngModel)] = "item.bid_price.starting_bid"/>
+        </div>
+        <div *ngIf="angForm.controls['starting_bid'].invalid && (angForm.controls['starting_bid'].dirty || angForm.controls['starting_bid'].touched)" class="alert alert-danger">
+        <div *ngIf="angForm.controls['starting_bid'].errors.required">
+          End time for bid required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4">Image</label>
+        <input type="file" class="form-control" name="file" (change)="onFileChange($event)" #file />
+        </div>
+        <div class="form-group">
+          <button (click)="updateItem(name.value, desc.value,category.value,start_time.value,end_time.value,starting_bid.value,file.value)" [disabled]="angForm.pristine || angForm.invalid" class="btn btn-primary">Add Item</button>
+        </div>
+    </form>
+  </div>
+</div>
