@@ -9,7 +9,7 @@
     <p class="card-text"></p><span class ="label label-primary">${{item.bid_price.starting_bid}}</span>
     <hr>
     <p class="card-text">{{item.desc}}</p>
-    <a href="#" class="btn btn-primary">Enter Auction</a>
+    <a [routerLink]="['/liveItem', item._id]" class="btn btn-primary">Enter Auction</a>
     <br>
     
     <!-- <a *ngIf = "adminFlag" href="#" class="btn btn-success">Update</a>

@@ -23,7 +23,7 @@ export class ItemService {
            .get(`${this.uri}/upcomingItems`);
     }
 
-  editItem(id): Observable<any>{
+  getItem(id): Observable<any>{
   return this
             .http
             .get(`${this.uri}/getItem/${id}`);
@@ -44,5 +44,13 @@ deleteItem(id){
 
 getSoldItems(){
   return this.http.get(`${this.uri}/getsoldItems`);
+}
+
+getCategory(){
+  return this.http.get(`http://localhost:4000/api/category/get`);
+}
+
+addCategory(name){
+  return this.http.post(`http://localhost:4000/api/category/create`,name);
 }
 }

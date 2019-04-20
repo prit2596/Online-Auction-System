@@ -17,7 +17,9 @@ exports.createItem = [
 	check('start_time').withMessage('Start time required'),
 	check('end_time').withMessage('End time required'),
 	check('starting_bid').withMessage('Starting Bid required'),
+	
 	(req, res, next) => {
+		console.log("Here")
 		const error = validationResult(req);
 		if (!error.isEmpty()) {
 			return res.json({
@@ -29,8 +31,8 @@ exports.createItem = [
 			var start_time = new Date(req.body.start_time).getTime();
 			var end_time = new Date(req.body.end_time).getTime();
 			console.log(start_time + "  " + end_time);
-			//console.log(req.body);
-			console.log(start_time +" "+ end_time);
+			console.log(req.body);
+			//console.log(start_time +" "+ end_time);
 			if (start_time <= Date.now()) {
 				res.json({
 					error: "Start time cannot be smaller than present time"

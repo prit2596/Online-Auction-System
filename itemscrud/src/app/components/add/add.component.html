@@ -21,7 +21,11 @@
       </div> 
         <div class="form-group">
         <label class="col-md-4">Category</label>
-        <input type="text" class="form-control" name="category" formControlName="category" #category/>
+        <select *ngIf="!categoryFlag" class="form-control custom-select " formControlName="category" name= "category" (change) ="getCat($event)">
+            <option *ngFor = "let cat of category" value="{{cat.name}}" >{{cat.name}}</option>
+            <option value="new_cat" class= "label label-primary">Add New Category</option>
+        </select>
+        <input *ngIf="categoryFlag" type="text" class="form-control" formControlName="category" name= "category" (change) ="getCat($event)"/>
         </div>
         <div *ngIf="angForm.controls['category'].invalid && (angForm.controls['category'].dirty || angForm.controls['category'].touched)" class="alert alert-danger">
         <div *ngIf="angForm.controls['category'].errors.required">
@@ -30,7 +34,7 @@
       </div> 
         <div class="form-group">
         <label class="col-md-4">Start Time</label>
-        <!--<input type="text" class="form-control" name="start_time" formControlName="start_time" #start_time /> -->
+        <!-- -->
         <dl-date-time-picker startView="day" maxView="year" minView="minute" minuteStep="5"  name="start_time" formControlName="start_time" (change)="onStartTimeChange($event)" #start_time > 
       </dl-date-time-picker>
         </div>
@@ -71,7 +75,7 @@
         <input type="file" class="form-control" name="file" (change)="onFileChange($event)" #file />
         </div>
         <div class="form-group">
-          <button (click)="addAdItem(name.value, desc.value,category.value,start_time.value,end_time.value,starting_bid.value,file.value)" [disabled]="angForm.pristine || angForm.invalid || startDateerrorFlag || endDateerrorFlag" class="btn btn-primary">Add Item</button>
+          <button (click)="addAdItem(name.value, desc.value,start_time.value,end_time.value,starting_bid.value)" [disabled]="angForm.pristine || angForm.invalid || startDateerrorFlag || endDateerrorFlag" class="btn btn-primary">Add Item</button>
         </div>
     </form>
   </div>
