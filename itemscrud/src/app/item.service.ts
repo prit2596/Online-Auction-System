@@ -17,24 +17,23 @@ export class ItemService {
     
   }
   
-  getItems() {
+  getItems(): Observable<any>{
     return this
            .http
            .get(`${this.uri}/upcomingItems`);
     }
 
-  editItem(id){
+  editItem(id): Observable<any>{
   return this
             .http
             .get(`${this.uri}/getItem/${id}`);
   }
 
-  updateItem(formdata,id) {
+  updateItem(formdata,id) : Observable<any>{
 
-  this
+  return this
     .http
-    .put(`${this.uri}/updateItem/${id}`, formdata)
-    .subscribe(res => console.log('Done'));
+    .put(`${this.uri}/updateItem/${id}`, formdata);
 }
 
 deleteItem(id){

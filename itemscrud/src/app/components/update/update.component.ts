@@ -18,7 +18,9 @@ export class UpdateComponent implements OnInit {
     private router: Router,
     private itemservice: ItemService,
     private fb: FormBuilder,private cd: ChangeDetectorRef) {
-    this.createForm(); }
+    this.createForm();
+    this.formData = new FormData();
+   }
     
     createForm() {
     this.angForm = this.fb.group({
@@ -39,8 +41,10 @@ export class UpdateComponent implements OnInit {
   	this.formData.append('end_time', end_time);
   	this.formData.append('starting_bid', starting_bid);
    this.route.params.subscribe(params => {
-      this.itemservice.updateItem(this.formData, params['id']);
-      this.router.navigateByUrl('/view');
+      this.itemservice.updateItem(this.formData, params['id'])
+      .subscribe(res => {
+        this.router.navigateByUrl('/view');
+      })
    });
 }
 
@@ -55,7 +59,7 @@ onFileChange(event) {
         file: reader.result
       });
       console.log(file)
-      this.formData = new FormData();
+      
       // need to run CD since file load runs outside of zone
       this.formData.append('image', file)
       this.cd.markForCheck();
@@ -65,9 +69,16 @@ onFileChange(event) {
   ngOnInit() {
   //temp : any ={};
   this.route.params.subscribe(params => {
-  this.itemservice.editItem(params['id']).subscribe(res => {
-  //var temp = res;
-  this.item = res["items"];
+  this.itemservice.editItem(params['id'])
+  .subscribe(res => {
+    //this.item = res["items"];
+
+    this.angForm.get('name').setValue(res['items'].name);
+    this.angForm.get('desc').setValue(res['items'].desc);
+    this.angForm.get('category').setValue(res['items'].category);
+    this.angForm.get('start_time').setValue(res['items'].time.start_time);
+    this.angForm.get('end_time').setValue(res['items'].time.end_time);
+    this.angForm.get('starting_bid').setValue(res['items'].bid_price.starting_bid);
   //console.log("here" +JSON.stringify(temp.items))
   })
   //console.log(this.item);
