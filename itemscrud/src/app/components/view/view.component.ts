@@ -33,9 +33,5 @@ export class ViewComponent implements OnInit {
   	{this.items = data["items"]
   	console.log("here" + JSON.stringify(data));
   	});
-
   }
-
-  
-
 }
