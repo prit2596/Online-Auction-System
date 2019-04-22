@@ -11,9 +11,11 @@ import { Router} from '@angular/router'
 
 export class AddComponent implements OnInit {
 	angForm: FormGroup
-	formData: FormData;
+	formData: FormData = new FormData();
   startDateerrorFlag : Boolean = false;
   endDateerrorFlag : Boolean = false;
+  category : [];
+  categoryFlag: Boolean = false;
   constructor(private additemservice : ItemService, private fb : FormBuilder, private cd: ChangeDetectorRef, private router: Router) {
   this.createForm();
    }
@@ -29,14 +31,13 @@ createForm() {
    });
   }
 
-  addAdItem(name, desc, category, start_time, end_time, starting_bid) {
+  addAdItem(name, desc, start_time, end_time, starting_bid) {
   	this.formData.append('name', name);
   	this.formData.append('desc', desc);
-  	this.formData.append('category', category);
   	this.formData.append('start_time', start_time);
   	this.formData.append('end_time', end_time);
   	this.formData.append('starting_bid', starting_bid);
-    console.log(start_time);
+    // console.log(category);
     this.additemservice.addAdItem(this.formData)
     .subscribe(res => this.router.navigateByUrl(''));
 }
@@ -51,7 +52,7 @@ onFileChange(event) {
         file: reader.result
       });
       console.log(file)
-      this.formData = new FormData();
+      //this.formData = new FormData();
       // need to run CD since file load runs outside of zone
       this.formData.append('image', file)
       this.cd.markForCheck();
@@ -100,7 +101,47 @@ onEndTimeChange(event){
   } 
   
 }
+
+getCat(event){
+  //console.log(event.target.value);
+  let cat = event.target.value;
+  if(cat == "new_cat" && !this.categoryFlag)
+  {
+    console.log("here");
+    this.angForm.get("category").setValue('');
+    this.categoryFlag = true;
+  }
+  else if(this.categoryFlag){
+    console.log(cat);
+    this.formData.append('category', cat);
+    this.additemservice.addCategory({'name' : cat})
+    .subscribe(
+      res=> {console.log("added-category" + cat); 
+      this.additemservice.getCategory()
+    .subscribe(res =>{
+      this.category = res['categories'];
+      console.log(this.category);
+    });
+    });
+    
+    this.categoryFlag = false;
+  }
+  else
+  {
+    this.formData.append('category', cat);
+    this.categoryFlag = false;
+
+  }
+  
+
+}
   ngOnInit() {
+    this.additemservice.getCategory()
+    .subscribe(res =>{
+      this.category = res['categories'];
+      console.log(this.category);
+    }
+      );
   }
 
 }

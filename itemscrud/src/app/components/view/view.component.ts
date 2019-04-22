@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemModel } from '../../item-model';
 import { ItemService } from '../../item.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view',
@@ -21,9 +21,10 @@ export class ViewComponent implements OnInit {
   deleteItem(id) {
     this.itemservice.deleteItem(id).subscribe(res => {
       console.log('Deleted');
-      this.router.navigate(['view']);
+      this.router.navigateByUrl('/view');
     });
   }
+
   ngOnInit() {
     this.items=[];
     this.items.length = 0;
@@ -33,9 +34,5 @@ export class ViewComponent implements OnInit {
   	{this.items = data["items"]
   	console.log("here" + JSON.stringify(data));
   	});
-
   }
-
-  
-
 }

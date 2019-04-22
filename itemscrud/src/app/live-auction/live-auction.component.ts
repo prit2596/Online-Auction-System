@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {LiveService} from '../live.service';
 import {ItemModel} from '../item-model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-live-auction',
   templateUrl: './live-auction.component.html',

@@ -21,6 +21,7 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LiveAuctionComponent } from './live-auction/live-auction.component';
 import { SoldItemsComponent } from './sold-items/sold-items.component';
+import { LiveItemComponent } from './live-item/live-item.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: 'sold',
     component: SoldItemsComponent
+  },
+  {
+    path: 'liveItem/:id',
+    component: LiveItemComponent
   }
 ];
 @NgModule({
@@ -56,7 +61,8 @@ const routes: Routes = [
     UpdateComponent,
     DashboardComponent,
     LiveAuctionComponent,
-    SoldItemsComponent
+    SoldItemsComponent,
+    LiveItemComponent
   ],
   imports: [
     BrowserModule,

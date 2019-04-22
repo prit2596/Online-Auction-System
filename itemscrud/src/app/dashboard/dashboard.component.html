@@ -1,3 +1,30 @@
-<p>
-  dashboard works!
-</p>
+<ng2-slim-loading-bar color="blue"></ng2-slim-loading-bar>
+<nav class="navbar navbar-expand-sm bg-light">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a routerLink="add" class="nav-link" routerLinkActive="active">
+          Add Items
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="view" class="nav-link" routerLinkActive="active">
+          View Items
+        </a>
+      </li> 
+    </ul>
+  </div>
+</nav>
+<div class = "container">
+    <router-outlet></router-outlet>
+  </div>
+<div class="container">
+    <app-view></app-view>
+</div>
+<div class="container">
+    <app-live-auction></app-live-auction>
+</div>
+<div class="container">
+    <app-sold-items></app-sold-items>
+</div>
+
