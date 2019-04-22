@@ -16,9 +16,9 @@ liveSchema.statics={
         this.findOneAndUpdate(query,{$set:updateData},{new: true},cb);
     },
     addUser: function(query, updateData, cb){
-        this.findOneAndUpdate(query,{$set:updateData},{new: true},cb);
+        this.findOneAndUpdate(query,{$set:updateData},{upsert: true ,new: true},cb);
     }
 };
 
-var liveModel = mangoose.model('Live', liveSchema, 'live');
+var liveModel = mangoose.model('live', liveSchema, 'live');
 module.exports = liveModel;

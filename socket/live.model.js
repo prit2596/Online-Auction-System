@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 ObjectId = Schema.ObjectId;
 var liveSchema = new Schema({
     itemId: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     users: [{
@@ -13,7 +13,7 @@ var liveSchema = new Schema({
             required: true
         },
         socketId: {
-            type: ObjectId,
+            type: String,
             required: true
         }
     }]

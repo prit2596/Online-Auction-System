@@ -11,6 +11,10 @@ import {LivebidService} from '../livebid.service';
   styleUrls: ['./live-item.component.css']
 })
 export class LiveItemComponent implements OnInit {
+  
+  userId: String = "pritthakkar2.pt@gmail.com";
+  
+  totalUsers = 0;
   item: any = {};
   imageUrl: String = 'http://localhost:4000/';
   constructor(private route: ActivatedRoute,
@@ -23,6 +27,13 @@ export class LiveItemComponent implements OnInit {
       this.itemservice.getItem(params['id'])
       .subscribe(res => {
         this.item = res['items'];
+      });
+
+      this.liveBidService.joinAuction(params['id'], this.userId);
+      this.liveBidService.totalUsers()
+      .subscribe((data) => {
+        console.log('here new users');
+        this.totalUsers = data.numberOfUsers;
       });
     })
   }

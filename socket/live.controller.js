@@ -22,15 +22,19 @@ createAuction=function(io, socket, data){
 exports.addUser = function(io,socket,data){
     live.getAuction({itemId: data.itemId}, function(err, auction){
         if(err) throw err;
-        if(auction === null)
-            createAuction(io, socket, data);
-        else{
-            let users = auction.users;
+        
+        if(auction){
+            users = auction.users;
             var user = {
                 userId : data.userId,
                 socketId : socket.id
             }
-            users.push(user);
+            if(users){
+                users.push(user);
+            }
+            else{
+                users = [user];
+            }
             var updateData = {users: users}; 
             live.addUser({itemId: data.itemId}, updateData, function(err, auction){
                 if(err) throw err;
@@ -38,10 +42,21 @@ exports.addUser = function(io,socket,data){
                 // auction.users.forEach(user => {
                 //     socket_ids.push(user.socketId);
                 // });
-
-                let socket_ids = auction.users.map(user => user.socketId);
+                
+                let socket_ids;
+                if(auction && auction.users){
+                    socket_ids = auction.users.map(user => user.socketId);
+                }
+                else{
+                    socket_ids = [user.socketId];
+                }
+                console.log(socket_ids);
                 io.sockets.connected[socket_ids].emit('totalUsers',{numberOfUsers: socket_ids.length});
             });       
+        }
+        else{
+            //console.log('new auction');
+            createAuction(io, socket, data);
         }
     });
 }

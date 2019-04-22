@@ -28,8 +28,7 @@ export class ViewComponent implements OnInit {
   ngOnInit() {
     this.items=[];
     this.items.length = 0;
-  	this.itemservice
-  	.getItems()
+  	this.itemservice.getItems()
   	.subscribe((data) => 
   	{this.items = data["items"]
   	console.log("here" + JSON.stringify(data));
