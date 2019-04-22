@@ -117,12 +117,13 @@ getCat(event){
     this.additemservice.addCategory({'name' : cat})
     .subscribe(
       res=> {console.log("added-category" + cat); 
-    });
-    this.additemservice.getCategory()
+      this.additemservice.getCategory()
     .subscribe(res =>{
       this.category = res['categories'];
       console.log(this.category);
     });
+    });
+    
     this.categoryFlag = false;
   }
   else
