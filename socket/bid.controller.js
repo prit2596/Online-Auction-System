@@ -56,3 +56,10 @@ exports.getHighestBid = function (itemId) {
     })
 }
 
+exports.getBidLogs = function(io,socket,data){
+    bid.getAuction({ itemId : data.itemId }, function(err,auction){
+        if (err) throw err;
+        socketIds = liveAuction.getSocketIds(data.itemId);
+        io.sockets.connected[socketIds].emit('bid_logs' , { users: auction.users });
+    } )
+}

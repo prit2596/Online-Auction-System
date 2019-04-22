@@ -3,6 +3,7 @@ import { ItemModel } from '../item-model';
 import { ItemService } from '../item.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {ChangeDetectorRef} from '@angular/core';
+import {LivebidService} from '../livebid.service';
 
 @Component({
   selector: 'app-live-item',
@@ -14,7 +15,7 @@ export class LiveItemComponent implements OnInit {
   imageUrl: String = 'http://localhost:4000/';
   constructor(private route: ActivatedRoute,
     private router: Router,
-    
+    private liveBidService : LivebidService,
     private itemservice: ItemService) { }
 
   ngOnInit() {

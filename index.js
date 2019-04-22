@@ -11,7 +11,8 @@ var itemsRoutes = require('./api/items/items.routes');
 var properties = require('./config/properties');
 var db = require('./config/database');
 var app = express();
-
+var http = require('http').Server(app);
+var io = require('socket.io')(http, {origins : "*:*"});
 //configure bodyParser
 var bodyParserJSON = bodyParser.json();
 var bodyParserURLEncoded = bodyParser.urlencoded({extended: true});
@@ -31,12 +32,11 @@ app.use('/api/items',itemsRoutes);
 
 
 //socket
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 var live_auction = require('./socket/live.controller');
 var timeout  = require('./socket/timeout.controller');
 var bid = require('./socket/bid.controller');
 io.sockets.on('connection',function(socket){
+    console.log("connected");
     socket.on('join_auction', function(data){
         //itemid, userid, socketid
         live_auction.addUser(io,socket,data);
@@ -50,14 +50,10 @@ io.sockets.on('connection',function(socket){
     socket.on('disconnect', function(data){
         live_auction.deleteUser(io,socket, data);
     });
+    socket.on('fetch_bid_logs', function(data){
+        bid.getBidLogs(io,socke,data);
+    });
 })
-
-
-
-
-
-
-
-app.listen(properties.PORT, (req, res) =>{
+http.listen(properties.PORT, (req, res) =>{
     console.log(` Server is running on ${properties.PORT} port`);
 });

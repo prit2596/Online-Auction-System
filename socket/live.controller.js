@@ -59,14 +59,19 @@ exports.deleteUser = function(io, socket, data){
         if(err) throw err;
         if(auction !== null){
             let users = auction.users;
-            userUpdate = users.filter(function(user){
-                return user.userId !== data.userId
-            })
-            live.deleteUser({itemId: data.itemId}, userUpdate, function(err, auction){
-                if(err) throw err;
-                let socket_ids = auction.users.map(user => user.socketId);
-                io.sockets.connected[socket_ids].emit('totalUsers',{numberOfUsers: socket_ids.length});
-            });
+            console.log(users);
+            if(users)
+            {
+                userUpdate = users.filter(function(user){
+                    return user.userId !== data.userId
+                })
+                live.deleteUser({itemId: data.itemId}, userUpdate, function(err, auction){
+                    if(err) throw err;
+                    let socket_ids = auction.users.map(user => user.socketId);
+                    io.sockets.connected[socket_ids].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                });
+            }
+            
         }
     });    
 }

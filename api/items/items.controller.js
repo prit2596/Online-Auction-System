@@ -27,7 +27,7 @@ exports.createItem = [
 			})
 		}
 		else {
-			console.log(Date.now());
+			//console.log(Date.now());
 			var start_time = new Date(req.body.start_time).getTime();
 			var end_time = new Date(req.body.end_time).getTime();
 			console.log(start_time + "  " + end_time);
@@ -109,7 +109,7 @@ exports.getById = function (req, res, next) {
  				error: err
  			})
  		}
- 		console.log(items)
+ 		//console.log(items)
  		return res.json({
  			items: items
  		})
@@ -157,7 +157,7 @@ exports.updateItem = [
 								error: err
 							}));
 						}
-						console.log("successfully")
+						//console.log("successfully")
 						return next(res.json({
 							message: "Item updated successfully"
 						}));
@@ -229,12 +229,12 @@ exports.getLiveItems = function(req, res, next){
 		archive: false,
 		sold: false
 	}
-	console.log(new Date())
+	//console.log(new Date())
 
-	console.log(Date.now());
+	//console.log(Date.now());
 	
 	Items.get(query, function(err, items){
-		console.log(items);
+	//	console.log(items);
 		if(err){
 			res.json({
 				error: err
@@ -272,7 +272,7 @@ exports.getUpcomingItems= function(req, res, next){
 		archive: false,
 		sold: false
 	}
-	console.log(new Date())
+	//console.log(new Date())
 	Items.get(query, function(err, items){
 		console.log(items);
 		if(err){
