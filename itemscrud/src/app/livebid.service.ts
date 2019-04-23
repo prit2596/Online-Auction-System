@@ -11,10 +11,12 @@ export class LivebidService {
   private socket;
 
   constructor() {
+    console.log('in constructor');
     this.socket = io(this.url);
    }
 
   joinAuction(itemId, userId){
+    console.log('join_auction');
     var data = {
       'itemId': itemId,
       'userId': userId
@@ -27,7 +29,43 @@ export class LivebidService {
       this.socket.on('totalUsers', (data) => {
         observer.next(data)
     });
-      
-  })
+  })}
+
+
+  addBid(itemId, userId, bid){
+    var data = {
+      'itemId': itemId,
+      'userId': userId,
+      'bid': bid
+    }
+
+    this.socket.emit('new_bid', data);
+  }
+
+  leaveAuction(){
+    var data = {}
+    this.socket.emit('forceDisconnect', data);
+  }
+
+  fetchBidLogs(itemId){
+    var data = {
+      'itemId': itemId
+    }
+    this.socket.emit('fetch_bid_logs', data);
+  }
+
+  firstTimeLogs(): Observable<any>{
+    return new Observable<any> (observer => {
+      this.socket.on('bid_logs', (data) => {
+        observer.next(data)
+    });
+  })}
+
+  postedBid(): Observable<any>{
+    return new Observable<any> (observer => {
+      this.socket.on('posted_bid', (data) => {
+        observer.next(data)
+      });
+    });
   }
 }

@@ -10,7 +10,7 @@ bidSchema.statics = {
         this.findOneAndUpdate(query,{$set:updateData},{new: true},cb);
     },
     getAuction: function(query, cb){
-        this.find(query, cb);
+        this.findOne(query, cb);
     }
 }
 

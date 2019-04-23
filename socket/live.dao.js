@@ -7,7 +7,7 @@ liveSchema.statics={
         user.save(cb);
     },
     getAuction: function(query, cb){
-        this.find(query, cb);
+        this.findOne(query, cb);
     },
     deleteAuction: function(query,cb){
         this.findOneAndDelete(query,cb);

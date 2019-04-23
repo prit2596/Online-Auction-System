@@ -4,43 +4,60 @@ var liveAuction = require('./live.controller');
 var liveDao = require('./live.dao');
 
 //
-createAuction = function (io, socket, data) {
-    var user = {
-        userId: data.userId,
-        bid: item.getStartBid(data.itemId) + data.bid
-    }
-    var auction = {
-        itemId: data.itemId,
-        users: [user]
-    }
-    bid.createAuctionLog(auction, function (err, auction) {
-        if (err) throw err
-        socketIds = liveAuction.getSocketIds(data.itemId);
-        io.sockets.connected[socketIds].emit('posted_bid', { user: user });
-    });
+createBidLogTable = function (io, socket, data) {
+    console.log('in create')
+    item.getStartBid(data.itemId, function(err, starting_bid){
+        console.log(starting_bid)
+        if(err) throw err;
+        console.log('check inside');
+        var user = {
+            userId: data.userId,
+            bid: starting_bid + parseInt(data.bid)
+        }
+        var auction = {
+            itemId: data.itemId,
+            users: [user]
+        }
+        bid.createAuctionLog(auction, function (err, auction) {
+            if (err) throw err
+            liveAuction.getSocketIds(data.itemId, function(err, socketIds){
+                console.log(auction);
+                socketIds.forEach(socket => {
+                    io.sockets.connected[socket].emit('posted_bid', { user: user });    
+                })
+            });
+        });
+    })
+
 }
 
 exports.addBid = function (io, socket, data) {
-    liveDao.getAuction({ itemId: data.itemId }, function (err, liveAuction) {
+    liveDao.getAuction({ itemId: data.itemId }, function (err, liveAuc) {
         if (err) throw err;
-        if (liveAuction !== null) {
-
+        if (liveAuc) {
 
             bid.getAuction({ itemId: data.itemId }, function (err, auction) {
                 if (err) throw err;
-                if (auction === null)
-                    createAuction(io, socket, data);
-                else {
+                if (auction){
+                    console.log('m here' + auction)
                     var user = {
                         userId: data.userId,
-                        bid: auction.users[auction.users.length - 1].bid + data.bid
+                        bid: auction.users[auction.users.length - 1].bid + parseInt(data.bid)
                     }
                     auction.users.push(user);
-                    bid.addBid({ itemId: data.itemId }, auction, function (err, auction) {
+                    bid.addBid({ itemId: data.itemId }, auction, function (err, changedAuction) {
                         if (err) throw err;
-                        socketIds = liveAuction.getSocketIds(data.itemId);
-                        io.sockets.connected[socketIds].emit('posted_bid', { user: user });
+                        liveAuction.getSocketIds(data.itemId, function(err, socketIds){
+                            // console.log(socketIds)
+                            // console.log('after bid log' + changedAuction)
+                            socketIds.forEach(socket => {
+                                io.sockets.connected[socket].emit('posted_bid', { user: user });
+                            })
+                        });
                     })
+                }
+                else {
+                    createBidLogTable(io, socket, data);
                 }
             });
 
@@ -57,9 +74,10 @@ exports.getHighestBid = function (itemId) {
 }
 
 exports.getBidLogs = function(io,socket,data){
+    //console.log("bidLogs"+ data.itemId)
     bid.getAuction({ itemId : data.itemId }, function(err,auction){
         if (err) throw err;
-        socketIds = liveAuction.getSocketIds(data.itemId);
-        io.sockets.connected[socketIds].emit('bid_logs' , { users: auction.users });
-    } )
+        //console.log("bidLogs: Auction"+ auction);
+        socket.emit('bid_logs', { users: auction.users});        
+    })
 }

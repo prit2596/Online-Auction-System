@@ -1,15 +1,36 @@
 <div class = "container">
+  <h1 align="center">Live Auction</h1>
+  <hr>
   <div class = "row">
       <div class="col-md-6">
           <img src="{{imageUrl}}{{item.image[0].path}}">
           <h1>{{item.name}}</h1>
           <p>{{item.desc}}</p>
         </div>
+
         <div class="col-md-6">
           <span class="label label-primary">
             Total Users : {{totalUsers}}
           </span>
+          <div class="row">
+              <div #scrollMe style="overflow: scroll; height: 500px;">
+                  <ul *ngIf="logs">
+                    <li *ngFor="let log of logs">
+                      {{log.userId}} ----- {{log.bid}} 
+                    </li>
+                  </ul>  
+              </div>
+          </div>
+          <div class="row">
+            <button type="button" class="btn btn-dark" value="10" (click) = "addBid($event)">+10</button>
+            <button type="button" class="btn btn-dark" value="20" (click) = "addBid($event)">+20</button>
+            <button type="button" class="btn btn-dark" value="50" (click) = "addBid($event)">+50</button>
+            <button type="button" class="btn btn-dark" value="100" (click) = "addBid($event)">+100</button>
+          </div>
+
+
         </div>
+
   </div>
     
 </div>

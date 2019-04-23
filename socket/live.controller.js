@@ -13,7 +13,8 @@ createAuction=function(io, socket, data){
 
     live.createAuction(auction, function(err, auction){
         if(err) throw err
-
+        console.log(socket.id)
+        console.log(typeof(socket.id))
         io.sockets.connected[socket.id].emit('totalUsers',{numberOfUsers: 1});
     });
 
@@ -22,15 +23,22 @@ createAuction=function(io, socket, data){
 exports.addUser = function(io,socket,data){
     live.getAuction({itemId: data.itemId}, function(err, auction){
         if(err) throw err;
-        
+        console.log("adding new user");
         if(auction){
             users = auction.users;
             var user = {
                 userId : data.userId,
                 socketId : socket.id
             }
+            
             if(users){
-                users.push(user);
+                var found = users.find(u => u.socketId === user.socketId)
+                if(found){
+
+                }
+                else{
+                    users.push(user);
+                }
             }
             else{
                 users = [user];
@@ -38,20 +46,21 @@ exports.addUser = function(io,socket,data){
             var updateData = {users: users}; 
             live.addUser({itemId: data.itemId}, updateData, function(err, auction){
                 if(err) throw err;
-                // let socket_ids = [];
-                // auction.users.forEach(user => {
-                //     socket_ids.push(user.socketId);
-                // });
-                
-                let socket_ids;
+
                 if(auction && auction.users){
-                    socket_ids = auction.users.map(user => user.socketId);
+                    socket_ids = [];
+                    auction.users.forEach(user => {
+                        socket_ids.push(user.socketId);
+                    })
+                    //socket_ids = auction.users.map(user => user.socketId);
                 }
                 else{
                     socket_ids = [user.socketId];
                 }
-                console.log(socket_ids);
-                io.sockets.connected[socket_ids].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                console.log(socket_ids)
+                socket_ids.forEach(socket => {
+                    io.sockets.connected[socket].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                })
             });       
         }
         else{
@@ -70,20 +79,33 @@ exports.deleteAuction = function(data){
 }
 
 exports.deleteUser = function(io, socket, data){
-    live.getAuction({itemId: data.itemId}, function(err, auction){
+    var query = {
+        users: {$elemMatch: {
+            socketId: socket.id
+        }
+        }
+    }
+    live.getAuction(query, function(err, auction){
+        console.log('Delete: getAuction');
         if(err) throw err;
-        if(auction !== null){
+        if(auction){
+            console.log('delete: auction')
             let users = auction.users;
-            console.log(users);
             if(users)
             {
+                console.log(socket.id)
                 userUpdate = users.filter(function(user){
-                    return user.userId !== data.userId
-                })
-                live.deleteUser({itemId: data.itemId}, userUpdate, function(err, auction){
+                    return user.socketId !== socket.id
+                });
+                console.log("User Update: " + userUpdate)
+                auction.users = userUpdate;
+                live.deleteUser({itemId: auction.itemId}, auction, function(err, chngedAuction){
+                    console.log("changed AUction:" +chngedAuction)
                     if(err) throw err;
-                    let socket_ids = auction.users.map(user => user.socketId);
-                    io.sockets.connected[socket_ids].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                    let socket_ids = chngedAuction.users.map(user => user.socketId);
+                    socket_ids.forEach(socket => {
+                        io.sockets.connected[socket].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                    })
                 });
             }
             
@@ -91,12 +113,14 @@ exports.deleteUser = function(io, socket, data){
     });    
 }
 
-exports.getSocketIds = function(itemId){
+exports.getSocketIds = function(itemId, cb){
     live.getAuction({itemId: itemId}, function(err, auction){
         if(err) throw err;
-        if(auction !== null){
-            let socket_ids = auction.users.map(user => user.socketId);
-            return socket_ids;
+        if(auction){
+            console.log(auction)
+            var socket_ids = auction.users.map(user => user.socketId);
+            console.log(socket_ids )
+            cb(null, socket_ids);
         }
     })
 }

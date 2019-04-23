@@ -48,10 +48,14 @@ io.sockets.on('connection',function(socket){
         timeout.auctionEnd(io, socket, data);
     });
     socket.on('disconnect', function(data){
+        console.log('on disconnect')
         live_auction.deleteUser(io,socket, data);
     });
+    // socket.on('forceDisconnect', function(data){
+    //     socket.disconnect();
+    // })
     socket.on('fetch_bid_logs', function(data){
-        bid.getBidLogs(io,socke,data);
+        bid.getBidLogs(io,socket,data);
     });
 })
 http.listen(properties.PORT, (req, res) =>{

@@ -196,10 +196,10 @@ exports.deleteItem = function (req, res, next) {
 	})
 }
 
-exports.getStartBid = function(itemId){
+exports.getStartBid = function(itemId, cb){
 	Items.getById({_id: itemId}, function(err, item){
 		if(err) throw err;
-		return item.bid_price.starting_bid;
+		cb(null,item.bid_price.starting_bid);
 	})
 }
 //to set the final price of item after auction end

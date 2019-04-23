@@ -16,6 +16,7 @@ export class AddComponent implements OnInit {
   endDateerrorFlag : Boolean = false;
   category : [];
   categoryFlag: Boolean = false;
+  selectedCategory: string;
   constructor(private additemservice : ItemService, private fb : FormBuilder, private cd: ChangeDetectorRef, private router: Router) {
   this.createForm();
    }
@@ -38,7 +39,9 @@ createForm() {
   	this.formData.append('end_time', end_time);
   	this.formData.append('starting_bid', starting_bid);
     // console.log(category);
+    this.formData.append('category', this.selectedCategory);
     this.additemservice.addAdItem(this.formData)
+    
     .subscribe(res => this.router.navigateByUrl(''));
 }
 onFileChange(event) {
@@ -113,7 +116,7 @@ getCat(event){
   }
   else if(this.categoryFlag){
     console.log(cat);
-    this.formData.append('category', cat);
+    //this.formData.append('category', cat);
     this.additemservice.addCategory({'name' : cat})
     .subscribe(
       res=> {console.log("added-category" + cat); 
@@ -128,7 +131,8 @@ getCat(event){
   }
   else
   {
-    this.formData.append('category', cat);
+    this.selectedCategory = cat;
+    //this.formData.append('category', cat);
     this.categoryFlag = false;
 
   }
