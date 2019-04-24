@@ -30,7 +30,6 @@ app.use('/api/user', userRoutes);
 app.use('/api/category',categoryRoutes);
 app.use('/api/items',itemsRoutes);
 
-
 //socket
 var live_auction = require('./socket/live.controller');
 var timeout  = require('./socket/timeout.controller');
