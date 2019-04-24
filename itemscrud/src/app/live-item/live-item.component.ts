@@ -23,15 +23,16 @@ export class LiveItemComponent implements OnInit {
   winner: any = {};
   imageUrl: String = 'http://localhost:4000/';
   logs = [];
-
+  private liveBidService;
 
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private liveBidService : LivebidService,
+    //private liveBidService : LivebidService,
     private itemservice: ItemService) { }
 
   ngOnInit() {
+    this.liveBidService = new LivebidService();
     this.userId = localStorage.getItem('userId')
     this.scrollToBottom();
     this.route.params.subscribe(params => {
@@ -95,6 +96,7 @@ export class LiveItemComponent implements OnInit {
   }
   ngOnDestroy(){
     console.log('onDestroy')
+    this.liveBidService.ngOnDestroy();
     //this.liveBidService.leaveAuction();
   }
 

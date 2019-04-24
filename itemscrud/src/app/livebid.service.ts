@@ -85,4 +85,9 @@ export class LivebidService {
     });
 
   }
+
+  ngOnDestroy(){
+    console.log('inside destroy of service');
+    this.leaveAuction();
+  }
 }

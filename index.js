@@ -51,9 +51,9 @@ io.sockets.on('connection',function(socket){
         console.log('on disconnect')
         live_auction.deleteUser(io,socket, data);
     });
-    // socket.on('forceDisconnect', function(data){
-    //     socket.disconnect();
-    // })
+    socket.on('forceDisconnect', function(data){
+        socket.disconnect();
+    })
     socket.on('fetch_bid_logs', function(data){
         bid.getBidLogs(io,socket,data);
     });
