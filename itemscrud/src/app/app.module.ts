@@ -23,37 +23,60 @@ import { LiveAuctionComponent } from './live-auction/live-auction.component';
 import { SoldItemsComponent } from './sold-items/sold-items.component';
 import { LiveItemComponent } from './live-item/live-item.component';
 import { CountdownTimerModule } from 'ngx-countdown-timer';
-import { SignupComponent } from './signup/signup.component'
-
+import { SignupComponent } from './signup/signup.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuardService } from './auth-guard-service.service';
+import { JwtModule } from '@auth0/angular-jwt';
 
 const routes: Routes = [
   {
+    path: 'signup',
+    component: SignupComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'editProfile',
+    component: EditUserComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
     path:'add',
-    component:AddComponent
+    component:AddComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path:'update/:id',
-    component:UpdateComponent
+    component:UpdateComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path:'view',
-    component:ViewComponent
+    component:ViewComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: '',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'live',
-    component: LiveAuctionComponent
+    component: LiveAuctionComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'sold',
-    component: SoldItemsComponent
+    component: SoldItemsComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'liveItem/:id',
-    component: LiveItemComponent
+    component: LiveItemComponent,
+    canActivate: [AuthGuardService]
   }
 ];
 @NgModule({
@@ -66,7 +89,9 @@ const routes: Routes = [
     LiveAuctionComponent,
     SoldItemsComponent,
     LiveItemComponent,
-    SignupComponent
+    SignupComponent,
+    EditUserComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,9 +102,17 @@ const routes: Routes = [
     ReactiveFormsModule,
     DlDateTimeDateModule,  
     DlDateTimePickerModule,
-    CountdownTimerModule.forRoot()
+    CountdownTimerModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: function  tokenGetter() {
+             return     localStorage.getItem('access_token');},
+        whitelistedDomains: ['localhost:4000'],
+        blacklistedRoutes: ['http://localhost:4000/api/user/login']
+      }
+    })
   ],
-  providers: [ItemService],
+  providers: [ItemService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

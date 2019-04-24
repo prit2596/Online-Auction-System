@@ -12,7 +12,6 @@ export class LiveAuctionComponent implements OnInit {
   constructor(private liveService : LiveService) { }
   imageUrl: String = 'http://localhost:4000/';
   items : ItemModel[]; 
-  adminFlag = true;
   ngOnInit() {
     this.liveService.getLiveItems()
     .subscribe(res => {

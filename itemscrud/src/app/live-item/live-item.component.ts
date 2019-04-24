@@ -14,8 +14,8 @@ import { CountdownTimerModule } from 'ngx-countdown-timer';
 export class LiveItemComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
-  userId: String = "pritthakkar2.pt@gmail.com";
-  
+  userId: String;
+  end_time : any;
   stop = false;
   totalUsers = 0;
   item: any = {};
@@ -32,11 +32,14 @@ export class LiveItemComponent implements OnInit {
     private itemservice: ItemService) { }
 
   ngOnInit() {
+    this.userId = localStorage.getItem('userId')
     this.scrollToBottom();
     this.route.params.subscribe(params => {
       this.itemservice.getItem(params['id'])
       .subscribe(res => {
         this.item = res['items'];
+        console.log(this.item)
+        this.end_time = new Date(this.item.time.end_time);
       });
 
       this.liveBidService.joinAuction(params['id'], this.userId);

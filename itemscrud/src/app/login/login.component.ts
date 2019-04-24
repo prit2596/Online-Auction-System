@@ -42,7 +42,9 @@ export class LoginComponent implements OnInit {
         // alert(localStorage.getItem('access_token'));
         // this.router.navigateByUrl('home');   route to dashboard
         console.log(data['user']);
-        this.router.navigateByUrl('/signup');
+        localStorage.setItem('userId', data['user'].email);
+        localStorage.setItem('admin', data['user'].admin);
+        this.router.navigateByUrl('');
       }
     });
     // this.router.navigateByUrl('/admin');

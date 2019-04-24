@@ -30,7 +30,9 @@ exports.auctionEnd = function(io, socket, data){
                         console.log('deleteing auction after timeout'+ socketIds);
                         if(err) throw err;
                         socketIds.forEach(socket => {
-                            io.sockets.connected[socket].emit('winner',{user: user.userId, price: user.bid});        
+                            if(socket && io.sockets.connected[socket]){
+                                io.sockets.connected[socket].emit('winner',{user: user.userId, price: user.bid});        
+                            }
                         })
                     });    
                 }
@@ -39,7 +41,9 @@ exports.auctionEnd = function(io, socket, data){
                         if(err) throw err;
                         console.log('deleteing auction after timeout'+ socketIds);
                         socketIds.forEach(socket => {
-                            io.sockets.connected[socket].emit('winner', {user: "No winners"});
+                            if(socket && io.sockets.connected[socket]){
+                                io.sockets.connected[socket].emit('winner', {user: "No winners"});
+                            }
                         })
                     });
 

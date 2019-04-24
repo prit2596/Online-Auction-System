@@ -2,18 +2,18 @@
   <h1 align="center">Live Auction</h1>
   <hr>
   <div class = "row">
-      <div class="col-md-6">
+      <div class="col-md-6" *ngIf="item && item.image[0]">
           <img src="{{imageUrl}}{{item.image[0].path}}">
           <h1>{{item.name}}</h1>
           <p>{{item.desc}}</p>
-        </div>
+      </div>
 
         <div class="col-md-6">
           <span class="label label-primary">
             Total Users : {{totalUsers}}
           </span>
-          <div class="row">
-            <countdown-timer (zeroTrigger)="timeOut()" [end]="'2019-04-23 22:58:00'"></countdown-timer>
+          <div class="row" *ngIf="end_time">
+            <countdown-timer (zeroTrigger)="timeOut()" [end]="end_time"></countdown-timer>
           </div>
           <div class="row">
               <div #scrollMe style="overflow: scroll; height: 500px;">

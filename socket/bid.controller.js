@@ -23,7 +23,9 @@ createBidLogTable = function (io, socket, data) {
             liveAuction.getSocketIds(data.itemId, function(err, socketIds){
                 console.log(auction);
                 socketIds.forEach(socket => {
-                    io.sockets.connected[socket].emit('posted_bid', { user: user });    
+                    if(socket && io.sockets.connected[socket]){
+                        io.sockets.connected[socket].emit('posted_bid', { user: user });    
+                    }
                 })
             });
         });
@@ -51,7 +53,9 @@ exports.addBid = function (io, socket, data) {
                             // console.log(socketIds)
                             // console.log('after bid log' + changedAuction)
                             socketIds.forEach(socket => {
-                                io.sockets.connected[socket].emit('posted_bid', { user: user });
+                                if(socket && io.sockets.connected[socket]){
+                                    io.sockets.connected[socket].emit('posted_bid', { user: user });
+                                }
                             })
                         });
                     })
@@ -79,7 +83,9 @@ exports.getBidLogs = function(io,socket,data){
         if (err) throw err;
         //console.log("bidLogs: Auction"+ auction);
         if(auction){
-            socket.emit('bid_logs', { users: auction.users});        
+            if(socket){
+                socket.emit('bid_logs', { users: auction.users});        
+            }
         }
     })
 }

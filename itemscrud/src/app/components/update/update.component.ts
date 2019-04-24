@@ -147,26 +147,33 @@ getCat(event){
 }
   ngOnInit() {
   //temp : any ={};
-  this.itemservice.getCategory()
-    .subscribe(res =>{
-      this.category = res['categories'];
-      console.log("hello" + this.category);
-    });
-  this.route.params.subscribe(params => {
-  this.itemservice.getItem(params['id'])
-  .subscribe(res => {
-    //this.item = res["items"];
+    console.log(localStorage.getItem('admin'))
+    if(localStorage.getItem('admin') == 'true'){
+      this.itemservice.getCategory()
+      .subscribe(res =>{
+        this.category = res['categories'];
+        console.log("hello" + this.category);
+      });
+      this.route.params.subscribe(params => {
+      this.itemservice.getItem(params['id'])
+      .subscribe(res => {
+        //this.item = res["items"];
 
-    this.angForm.get('name').setValue(res['items'].name);
-    this.angForm.get('desc').setValue(res['items'].desc);
-    this.angForm.get('category').setValue(res['items'].category);
-    this.angForm.get('start_time').setValue(new Date(res['items'].time.start_time));
-    this.angForm.get('end_time').setValue(new Date(res['items'].time.end_time));
-    this.angForm.get('starting_bid').setValue(res['items'].bid_price.starting_bid);
-  //console.log("here" +JSON.stringify(temp.items))
-  })
-  //console.log(this.item);
-  })
+        this.angForm.get('name').setValue(res['items'].name);
+        this.angForm.get('desc').setValue(res['items'].desc);
+        this.angForm.get('category').setValue(res['items'].category);
+        this.angForm.get('start_time').setValue(new Date(res['items'].time.start_time));
+        this.angForm.get('end_time').setValue(new Date(res['items'].time.end_time));
+        this.angForm.get('starting_bid').setValue(res['items'].bid_price.starting_bid);
+      //console.log("here" +JSON.stringify(temp.items))
+        })
+      //console.log(this.item);
+      })
+
+    }
+    else{
+      this.router.navigateByUrl('');
+    }
   }
 
 }

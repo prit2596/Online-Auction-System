@@ -15,7 +15,9 @@ createAuction=function(io, socket, data){
         if(err) throw err
         console.log(socket.id)
         console.log(typeof(socket.id))
-        io.sockets.connected[socket.id].emit('totalUsers',{numberOfUsers: 1});
+        if(io.sockets.connected[socket]){
+            io.sockets.connected[socket.id].emit('totalUsers',{numberOfUsers: 1});
+        }
     });
 
 }
@@ -59,7 +61,9 @@ exports.addUser = function(io,socket,data){
                 }
                 console.log(socket_ids)
                 socket_ids.forEach(socket => {
-                    io.sockets.connected[socket].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                    if(socket && io.sockets.connected[socket]){
+                        io.sockets.connected[socket].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                    }
                 })
             });       
         }
@@ -106,7 +110,9 @@ exports.deleteUser = function(io, socket, data){
                     if(err) throw err;
                     let socket_ids = chngedAuction.users.map(user => user.socketId);
                     socket_ids.forEach(socket => {
-                        io.sockets.connected[socket].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                        if(socket && io.sockets.connected[socket]){
+                            io.sockets.connected[socket].emit('totalUsers',{numberOfUsers: socket_ids.length});
+                        }
                     })
                 });
             }

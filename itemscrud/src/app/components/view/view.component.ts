@@ -15,7 +15,7 @@ export class ViewComponent implements OnInit {
 
   items: ItemModel[];
   imageUrl = 'http://localhost:4000/'
-  adminFlag = true;
+  adminFlag = false;
   constructor(private itemservice: ItemService,private router: Router) { }
 
   deleteItem(id) {
@@ -26,6 +26,9 @@ export class ViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(localStorage.getItem('admin') == 'true'){
+      this.adminFlag = true;
+    }
     this.items=[];
     this.items.length = 0;
   	this.itemservice.getItems()

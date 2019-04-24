@@ -11,7 +11,8 @@
                 <p class="card-text"></p><span class ="label label-primary">${{item.bid_price.starting_bid}}</span>
                 <hr>
                 <p class="card-text">{{item.desc}}</p>
-                
+                <hr>
+                <p class="card-text"><button class="btn btn-warning">Start Time: {{item.time.start_time}}</button></p>
                 <a *ngIf = "adminFlag" [routerLink]="['/update', item._id]" href="#" class="btn btn-success">Update</a>
                 <a *ngIf = "adminFlag" (click)="deleteItem(item._id)" href="#" class="btn btn-danger">Delete</a>
               </div>

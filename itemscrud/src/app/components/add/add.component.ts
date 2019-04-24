@@ -140,12 +140,17 @@ getCat(event){
 
 }
   ngOnInit() {
-    this.additemservice.getCategory()
-    .subscribe(res =>{
-      this.category = res['categories'];
-      console.log(this.category);
-    }
+    if(localStorage.getItem('admin') === 'true'){
+      this.additemservice.getCategory()
+      .subscribe(res =>{
+        this.category = res['categories'];
+        console.log(this.category);
+      }
       );
+    }
+    else{
+      this.router.navigateByUrl('');
+    }
   }
 
 }
