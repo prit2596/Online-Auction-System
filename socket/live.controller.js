@@ -70,11 +70,13 @@ exports.addUser = function(io,socket,data){
     });
 }
 
-exports.deleteAuction = function(data){
+exports.deleteAuction = function(data,cb){
     live.deleteAuction({itemId : data.itemId}, function(err, auction){
         if(err) throw err;
-        socket_ids = auction.users.map(user => user.socketId);
-        return socket_ids;
+        if(auction){
+            socket_ids = auction.users.map(user => user.socketId);
+            cb(null, socket_ids);    
+        }
     })
 }
 

@@ -13,6 +13,9 @@
             Total Users : {{totalUsers}}
           </span>
           <div class="row">
+            <countdown-timer (zeroTrigger)="timeOut()" [end]="'2019-04-23 22:58:00'"></countdown-timer>
+          </div>
+          <div class="row">
               <div #scrollMe style="overflow: scroll; height: 500px;">
                   <ul *ngIf="logs">
                     <li *ngFor="let log of logs">
@@ -21,12 +24,18 @@
                   </ul>  
               </div>
           </div>
-          <div class="row">
-            <button type="button" class="btn btn-dark" value="10" (click) = "addBid($event)">+10</button>
-            <button type="button" class="btn btn-dark" value="20" (click) = "addBid($event)">+20</button>
-            <button type="button" class="btn btn-dark" value="50" (click) = "addBid($event)">+50</button>
-            <button type="button" class="btn btn-dark" value="100" (click) = "addBid($event)">+100</button>
+          <div *ngIf="!sold">
+              <div class="row">
+                  <button type="button" class="btn btn-dark" value="10" (click) = "addBid($event)">+10</button>
+                  <button type="button" class="btn btn-dark" value="20" (click) = "addBid($event)">+20</button>
+                  <button type="button" class="btn btn-dark" value="50" (click) = "addBid($event)">+50</button>
+                  <button type="button" class="btn btn-dark" value="100" (click) = "addBid($event)">+100</button>
+                </div>
           </div>
+          <div *ngIf="sold">
+            <h1>Winner is {{winner.user}} with bidding {{winner.price}}</h1>
+          </div>
+          
 
 
         </div>

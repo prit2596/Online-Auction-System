@@ -68,4 +68,21 @@ export class LivebidService {
       });
     });
   }
+
+  timeOut(itemId){
+    console.log('timeout in service');
+    var data = {
+      'itemId': itemId
+    }
+    this.socket.emit('timeout', data)
+  }
+
+  winner(): Observable<any>{
+    return new Observable<any>(observer => {
+      this.socket.on('winner', (data) => {
+        observer.next(data);
+      });
+    });
+
+  }
 }

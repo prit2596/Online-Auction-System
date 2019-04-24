@@ -204,21 +204,23 @@ exports.getStartBid = function(itemId, cb){
 }
 //to set the final price of item after auction end
 exports.itemSold = function(data){
-	Items.getById({itemId: data.itemId}, function(err, item){
+	Items.getById({_id: data.itemId}, function(err, item){
 		if(err) throw err;
+		console.log(JSON.stringify(item));
 		item.bid_price.final_price = data.price;
 		item.sold = true;
 
-		Items.update({itemId: data.itemId}, item, function(err, item){
+		Items.update({_id: data.itemId}, item, function(err, updatedItem){
 			if(err) throw err;
+			console.log(JSON.stringify(updatedItem));
 		});
 	});
 }
 
-exports.checkItemSold = function(data){
+exports.checkItemSold = function(data, cb){
 	Items.getById({itemId: data.itemId}, function(err, item){
 		if(err) throw err;
-		return item.sold;
+		cb(null, item.sold);
 	})
 }
 

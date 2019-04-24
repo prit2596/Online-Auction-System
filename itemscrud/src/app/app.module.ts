@@ -22,6 +22,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LiveAuctionComponent } from './live-auction/live-auction.component';
 import { SoldItemsComponent } from './sold-items/sold-items.component';
 import { LiveItemComponent } from './live-item/live-item.component';
+import { CountdownTimerModule } from 'ngx-countdown-timer';
+import { SignupComponent } from './signup/signup.component'
+
 
 const routes: Routes = [
   {
@@ -62,7 +65,8 @@ const routes: Routes = [
     DashboardComponent,
     LiveAuctionComponent,
     SoldItemsComponent,
-    LiveItemComponent
+    LiveItemComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,8 @@ const routes: Routes = [
     HttpClientModule,
     ReactiveFormsModule,
     DlDateTimeDateModule,  
-    DlDateTimePickerModule
+    DlDateTimePickerModule,
+    CountdownTimerModule.forRoot()
   ],
   providers: [ItemService],
   bootstrap: [AppComponent]

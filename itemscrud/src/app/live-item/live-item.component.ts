@@ -4,6 +4,7 @@ import { ItemService } from '../item.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {ChangeDetectorRef} from '@angular/core';
 import {LivebidService} from '../livebid.service';
+import { CountdownTimerModule } from 'ngx-countdown-timer';
 
 @Component({
   selector: 'app-live-item',
@@ -15,8 +16,11 @@ export class LiveItemComponent implements OnInit {
 
   userId: String = "pritthakkar2.pt@gmail.com";
   
+  stop = false;
   totalUsers = 0;
   item: any = {};
+  sold = false;
+  winner: any = {};
   imageUrl: String = 'http://localhost:4000/';
   logs = [];
 
@@ -53,6 +57,12 @@ export class LiveItemComponent implements OnInit {
         console.log('new posted bid');
         this.logs.push(data.user)
       })
+
+      this.liveBidService.winner()
+      .subscribe((data) => {
+        this.winner = data;
+        this.sold = true;
+      })
     })
   }
 
@@ -73,6 +83,13 @@ export class LiveItemComponent implements OnInit {
     this.liveBidService.addBid(this.item._id, this.userId, bid);
   }
 
+  timeOut(){
+    if(!this.stop){
+      console.log('timeout in Component');
+      this.liveBidService.timeOut(this.item._id);  
+      this.stop = true;
+    }
+  }
   ngOnDestroy(){
     console.log('onDestroy')
     //this.liveBidService.leaveAuction();

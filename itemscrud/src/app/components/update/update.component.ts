@@ -47,7 +47,7 @@ export class UpdateComponent implements OnInit {
    this.route.params.subscribe(params => {
       this.itemservice.updateItem(this.formData, params['id'])
       .subscribe(res => {
-        this.router.navigateByUrl('/view');
+        this.router.navigateByUrl('');
       })
    });
 }

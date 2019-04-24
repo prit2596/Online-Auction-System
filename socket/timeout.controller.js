@@ -7,32 +7,42 @@ exports.auctionEnd = function(io, socket, data){
 //user item updated
     itemCtrl.checkItemSold(data.itemId, function(err, soldFlag){
         if(err) throw err;
+        console.log('checking Item sold', soldFlag)
         if(soldFlag === false){
             bidCtrl.getHighestBid(data.itemId, function(err, user){
-                if(user === null){
-                    liveAuctionCtrl.deleteAuction(data, function(err, socketIds){
-                        if(err) throw err;
-                        io.sockets.connected[socketIds].emit('winner', {user: "No winners"});
-                    });
-                }
-                else{
+                if(user){
                     var userData = {
                         itemId: data.itemId,
                         userId: user.userId,
                         price: user.bid
                     }
+                    console.log('hightest bid' + userData);
                     userCtrl.updateItems(userData);
                     //item updated
                     var itemData ={
                         itemId: data.itemId,
                         price: user.bid,
                     }
+                    console.log(JSON.stringify(itemData))
                     itemCtrl.itemSold(itemData);
                     //delete auction from live
                     liveAuctionCtrl.deleteAuction(data, function(err, socketIds){
+                        console.log('deleteing auction after timeout'+ socketIds);
                         if(err) throw err;
-                        io.sockets.connected[socketIds].emit('winner',{user: user.userId, price: user.bid});        
+                        socketIds.forEach(socket => {
+                            io.sockets.connected[socket].emit('winner',{user: user.userId, price: user.bid});        
+                        })
                     });    
+                }
+                else{
+                    liveAuctionCtrl.deleteAuction(data, function(err, socketIds){
+                        if(err) throw err;
+                        console.log('deleteing auction after timeout'+ socketIds);
+                        socketIds.forEach(socket => {
+                            io.sockets.connected[socket].emit('winner', {user: "No winners"});
+                        })
+                    });
+
                 }
             }); 
         }

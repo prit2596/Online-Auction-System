@@ -45,6 +45,7 @@ io.sockets.on('connection',function(socket){
         bid.addBid(io, socket, data);
     });
     socket.on('timeout', function(data){
+        console.log('calling timeout');
         timeout.auctionEnd(io, socket, data);
     });
     socket.on('disconnect', function(data){

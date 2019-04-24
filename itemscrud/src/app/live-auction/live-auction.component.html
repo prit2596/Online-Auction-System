@@ -1,8 +1,8 @@
-<h1>Live Auction</h1><br>
+<h1>Live Auction</h1>
 <hr>
 <div>
 <div  *ngFor = "let item of items" class="card" style="width: 18rem;">
-  <img class="card-img-top" src="{{imageUrl}}{{item.image[0].path}}" alt="Card image cap">
+  <img class="card-img-top" src="{{imageUrl}}{{item.image[0].path}}" alt="Card image cap" style="height: 250px;">
   <div class="card-body">
     <h5 class="card-title">{{item.name}}</h5>
     <hr>

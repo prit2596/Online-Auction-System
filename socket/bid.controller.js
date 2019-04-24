@@ -65,11 +65,11 @@ exports.addBid = function (io, socket, data) {
     })
 }
 
-exports.getHighestBid = function (itemId) {
+exports.getHighestBid = function (itemId, cb) {
     bid.getAuction({ itemId: itemId }, function (err, auction) {
         if (err) throw err;
         if(auction === null) return null;
-        return auction.users[auction.users.length - 1];
+        cb(null, auction.users[auction.users.length - 1]);
     })
 }
 
@@ -78,6 +78,8 @@ exports.getBidLogs = function(io,socket,data){
     bid.getAuction({ itemId : data.itemId }, function(err,auction){
         if (err) throw err;
         //console.log("bidLogs: Auction"+ auction);
-        socket.emit('bid_logs', { users: auction.users});        
+        if(auction){
+            socket.emit('bid_logs', { users: auction.users});        
+        }
     })
 }
