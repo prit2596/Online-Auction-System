@@ -40,6 +40,9 @@ router.post('/create',upload.single('profilePic'), Users.createUser);
 router.get('/getUsers', Users.getUsers);
 router.get('/getUser/:email', Users.getUserByEmail);
 router.put('/updateUser/:email', Users.updateUser);
-router.delete('/deleteUser/:email', Users.deleteUser)
+router.delete('/deleteUser/:email', Users.deleteUser);
+router.get('/me', Users.verifyToken, Users.checkUser);
+router.post('/login', Users.login);
+router.get('/logout', Users.logout);
 
 module.exports = router;
