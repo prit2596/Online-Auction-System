@@ -17,7 +17,7 @@ export class LiveAuctionComponent implements OnInit {
     .subscribe(res => {
       console.log(res.items)
       this.items = res.items;
-
+      console.log(this.items.length)
     });
   }
 

@@ -1,8 +1,7 @@
-  <h1>Sold Items</h1>
+  <h1 class="p-2">Sold Items</h1>
   <hr>
   <div class="row">
-      <div *ngFor = "let item of items" class ="col-md-4">
-          <div class="card" style="width: 18rem;">
+          <div class="card m-4" *ngFor = "let item of items | paginate: { id: 'view',itemsPerPage: 3,currentPage: p}" style="width: 18rem;">
             <img class="card-img-top" src="{{imageUrl}}{{item.image[0].path}}" alt="Card image cap" style="height: 250px;"x>
             <div class="card-body">
               <h5 class="card-title">{{item.name}}</h5>
@@ -12,7 +11,6 @@
               <p class="card-text">{{item.desc}}</p>
               <p class="card-text"><button class="btn btn-danger">Sold Price: ${{item.bid_price.final_price}}</button></p>
             </div>
-          </div>
-          <br>
       </div>
   </div>
+  <pagination-controls class="d-flex justify-content-center" id="view" (pageChange)="p = $event"></pagination-controls>

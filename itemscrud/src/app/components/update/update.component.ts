@@ -18,6 +18,7 @@ export class UpdateComponent implements OnInit {
   endDateerrorFlag : Boolean = false;
   category : [];
   categoryFlag: Boolean = false;
+  selectedCategory:string;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private itemservice: ItemService,
@@ -40,7 +41,7 @@ export class UpdateComponent implements OnInit {
   updateItem(name, desc, category, start_time, end_time, starting_bid) {
   this.formData.append('name', name);
   	this.formData.append('desc', desc);
-  	this.formData.append('category', category);
+  	this.formData.append('category', this.selectedCategory);
   	this.formData.append('start_time', start_time);
   	this.formData.append('end_time', end_time);
   	this.formData.append('starting_bid', starting_bid);
@@ -122,7 +123,7 @@ getCat(event){
   }
   else if(this.categoryFlag){
     console.log(cat);
-    this.formData.append('category', cat);
+    //this.formData.append('category', cat);
     this.itemservice.addCategory({'name' : cat})
     .subscribe(
       res=> {console.log("added-category" + cat); 
@@ -138,7 +139,8 @@ getCat(event){
   }
   else
   {
-    this.formData.append('category', cat);
+    //this.formData.append('category', cat);
+    this.selectedCategory = cat;
     this.categoryFlag = false;
 
   }
@@ -162,6 +164,7 @@ getCat(event){
         this.angForm.get('name').setValue(res['items'].name);
         this.angForm.get('desc').setValue(res['items'].desc);
         this.angForm.get('category').setValue(res['items'].category);
+        this.selectedCategory = res['items'].category;
         this.angForm.get('start_time').setValue(new Date(res['items'].time.start_time));
         this.angForm.get('end_time').setValue(new Date(res['items'].time.end_time));
         this.angForm.get('starting_bid').setValue(res['items'].bid_price.starting_bid);

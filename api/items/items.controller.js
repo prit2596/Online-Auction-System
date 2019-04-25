@@ -138,10 +138,12 @@ exports.updateItem = [
 					})
 				}
 				else {
-					var item = {
+					item.image.push({path: req.file.path})
+					//console.log(item.image)
+					var newItem = {
 						name: req.body.name,
 						desc: req.body.desc,
-						// image: [req.file.path],
+						image: item.image,
 						category: req.body.category,
 						time: {
 							start_time: req.body.start_time,
@@ -151,13 +153,14 @@ exports.updateItem = [
 							starting_bid: req.body.starting_bid
 						}
 					}
-					Items.update({ _id: req.params.id }, item, function (err, user) {
+					console.log("Upate Item" + JSON.stringify(newItem))
+					Items.update({ _id: req.params.id }, newItem, function (err, user) {
 						if (err) {
 							return next(res.json({
 								error: err
 							}));
 						}
-						//console.log("successfully")
+						console.log("successfully")
 						return next(res.json({
 							message: "Item updated successfully"
 						}));

@@ -28,7 +28,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './auth-guard-service.service';
 import { JwtModule } from '@auth0/angular-jwt';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 const routes: Routes = [
   {
     path: 'signup',
@@ -91,7 +91,7 @@ const routes: Routes = [
     LiveItemComponent,
     SignupComponent,
     EditUserComponent,
-    LoginComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -102,6 +102,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     DlDateTimeDateModule,  
     DlDateTimePickerModule,
+    NgxPaginationModule,
     CountdownTimerModule.forRoot(),
     JwtModule.forRoot({
       config: {
