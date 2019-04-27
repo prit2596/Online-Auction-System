@@ -29,7 +29,7 @@
           <button class="btn btn-secondary btn-block">
             <b>Total Users : {{totalUsers}} </b>
           </button>
-          <button *ngIf="end_time" class="btn btn-warning btn-block">
+          <button *ngIf="!sold && end_time" class="btn btn-warning btn-block">
                  <b>Time Remaining:  <countdown-timer (zeroTrigger)="timeOut()" [end]="end_time"></countdown-timer></b>      
           </button>
           <div *ngIf="sold">
