@@ -41,7 +41,9 @@ export class EditUserComponent implements OnInit {
 
   updateUser(first_name, last_name, address){
     this.userService.updateUser(first_name, last_name, address, this.user.email)
-    .subscribe(res => console.log(res));
+    .subscribe((data)=> {
+      this.router.navigateByUrl('')
+    });
   }
 
 }

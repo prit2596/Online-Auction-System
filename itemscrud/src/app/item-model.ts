@@ -9,8 +9,8 @@ export class ItemModel {
 		end_time : Date,
 	};
 	bid_price: {
-		starting_bid : Number,
-		final_price: Number
+		starting_bid : number,
+		final_price: number
 	};
 	archive: Boolean;
 	sold: Boolean;

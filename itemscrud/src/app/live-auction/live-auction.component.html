@@ -1,17 +1,46 @@
-<h1 class="p-2">Live Auction</h1>
-<hr>
-<div class ="row">
-  <div  *ngFor = "let item of items | paginate: { id:'live' ,itemsPerPage: 3,currentPage: p}" class="card m-4" style="width: 18rem;">
-    <img class="card-img-top" src="{{imageUrl}}{{item.image[0].path}}" alt="Card image cap" style="height: 250px;">
-    <div class="card-body">
-      <h5 class="card-title">{{item.name}}</h5>
-      <hr>
-      <p class="card-text"></p><span class ="label label-primary">${{item.bid_price.starting_bid}}</span>
-      <hr>
-      <p class="card-text">{{item.desc}}</p>
-      <a [routerLink]="['/liveItem', item._id]" class="btn btn-primary d-flex justify-content-center">Enter Auction</a>
+<div *ngIf="items.length !== 0">
+
+  <h1 class="p-2">Live Auction</h1>
+  <hr>
+  <div class="row">
+      <div class="dropdown col-md-2">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort By
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <p class="dropdown-item" (click)="sortByLowest()">Price: Lowest to Highest</p>
+            <p class="dropdown-item" (click)="sortByHighest()">Price: Highest to Lowest</p>
+          </div>
+        </div>
+        
+        <div class="dropdown col-md-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Category
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" (click)="filterByCategory($event)">No Filter</a>
+              <div *ngFor="let category of categories">
+                  <a class="dropdown-item" (click)="filterByCategory($event)">{{category}}</a>
+              </div>
+      
+            </div>
+          </div>
+  </div>
+  
+  <div class ="row">
+    <div  *ngFor = "let item of items | paginate: { id:'live' ,itemsPerPage: 3,currentPage: p}" class="card m-4" style="width: 18rem;">
+      <div *ngIf="item.image && item.image.length">
+          <img class="card-img-top" src="{{imageUrl}}{{item.image[item.image.length - 1].path}}" alt="Card image cap" style="height: 250px;">
+          <div class="card-body">
+            <h5 class="card-title">{{item.name}}</h5>
+            <hr>
+            <p class="card-text"></p><span class ="label label-primary"><b>Starting Bid:  </b><button class="btn btn-success">  ${{item.bid_price.starting_bid}}</button></span>
+            <hr>
+            <p class="card-text">{{item.desc}}</p>
+            <a [routerLink]="['/liveItem', item._id]" class="btn btn-primary d-flex justify-content-center">Enter Auction</a>
+          </div>
+      </div>
     </div>
   </div>
+  <pagination-controls class="d-flex justify-content-center" id = "live" (pageChange)="p = $event"></pagination-controls>
 </div>
-<pagination-controls class="d-flex justify-content-center" id = "live" (pageChange)="p = $event"></pagination-controls>
-

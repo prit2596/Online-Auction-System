@@ -13,7 +13,7 @@ import { NavigationCancel,
 })
 
 export class AppComponent {
-  title = 'itemscrud';
+  title = 'Auction System';
   constructor(private _loadingBar: SlimLoadingBarService, private _router: Router) {
     this._router.events.subscribe((event: Event) => {
       this.navigationInterceptor(event);

@@ -1,19 +1,45 @@
-<h1 class="p-2">Upcoming Items</h1>
-<hr>
-<div class="row"> 
-  <div class="card m-4" *ngFor = "let item of items | paginate: { id: 'view',itemsPerPage: 3,currentPage: p}" style="width: 18rem;">
-    <img class="card-img-top" src="{{imageUrl}}{{item.image[0].path}}" alt="Card image cap" style="height: 250px;">
-    <div class="card-body">
-      <h5 class="card-title">{{item.name}}</h5>
-      <hr>
-      <p class="card-text"></p><span class ="label label-primary">${{item.bid_price.starting_bid}}</span>
-      <hr>
-      <p class="card-text">{{item.desc}}</p>
-      <hr>
-      <p class="card-text"><button class="btn btn-warning">Start Time: {{item.time.start_time}}</button></p>
-      <a *ngIf = "adminFlag" [routerLink]="['/update', item._id]" href="#" class="btn btn-success d-flex justify-content-center">Update</a>
-      <a *ngIf = "adminFlag" (click)="deleteItem(item._id)" href="#" class="btn btn-danger d-flex justify-content-center">Delete</a>
+<div *ngIf="items.length !== 0">
+    <h1 class="p-2">Upcoming Items</h1>
+    <hr>
+    <div class="row">
+        <div class="dropdown col-md-2">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort By
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <p class="dropdown-item" (click)="sortByLowest()">Price: Lowest to Highest</p>
+              <p class="dropdown-item" (click)="sortByHighest()">Price: Highest to Lowest</p>
+            </div>
+          </div>
+
+          <div class="dropdown col-md-3">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Category
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" (click)="filterByCategory($event)">No Filter</a>
+                <div *ngFor="let category of categories">
+                    <a class="dropdown-item" (click)="filterByCategory($event)">{{category}}</a>
+                </div>
+        
+              </div>
+            </div>
     </div>
-  </div>          
+    <div class="row"> 
+      <div class="card m-4" *ngFor = "let item of items | paginate: { id: 'view',itemsPerPage: 3,currentPage: p}" style="width: 18rem;">
+        <img class="card-img-top" src="{{imageUrl}}{{item.image[0].path}}" alt="Card image cap" style="height: 250px;">
+        <div class="card-body">
+          <h5 class="card-title">{{item.name}}</h5>
+          <hr>
+          <p class="card-text"></p><span class ="label label-primary">${{item.bid_price.starting_bid}}</span>
+          <hr>
+          <p class="card-text">{{item.desc}}</p>
+          <hr>
+          <p class="card-text"><button class="btn btn-warning">Start Time: {{item.time.start_time}}</button></p>
+          <a *ngIf = "adminFlag" [routerLink]="['/update', item._id]" href="#" class="btn btn-success d-flex justify-content-center">Update</a>
+          <a *ngIf = "adminFlag" (click)="deleteItem(item._id)" href="#" class="btn btn-danger d-flex justify-content-center">Delete</a>
+        </div>
+      </div>          
+    </div>
+    <pagination-controls class="d-flex justify-content-center" id="view" (pageChange)="p = $event"></pagination-controls>
 </div>
-<pagination-controls class="d-flex justify-content-center" id="view" (pageChange)="p = $event"></pagination-controls>

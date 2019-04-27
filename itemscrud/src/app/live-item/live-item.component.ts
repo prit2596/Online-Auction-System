@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {ChangeDetectorRef} from '@angular/core';
 import {LivebidService} from '../livebid.service';
 import { CountdownTimerModule } from 'ngx-countdown-timer';
-
 @Component({
   selector: 'app-live-item',
   templateUrl: './live-item.component.html',
@@ -23,8 +22,9 @@ export class LiveItemComponent implements OnInit {
   winner: any = {};
   imageUrl: String = 'http://localhost:4000/';
   logs = [];
+  highestBid = 0;
   private liveBidService;
-
+  categories: [];
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -53,13 +53,15 @@ export class LiveItemComponent implements OnInit {
       this.liveBidService.fetchBidLogs(params['id']);
       this.liveBidService.firstTimeLogs()
       .subscribe((data) => {
-        this.logs = data.users
+        this.logs = data.users;
+        this.highestBid = this.logs[this.logs.length - 1].bid;
       })
 
       this.liveBidService.postedBid()
       .subscribe((data) => {
         console.log('new posted bid');
         this.logs.push(data.user)
+        this.highestBid = data.user.bid;
       })
 
       this.liveBidService.winner()

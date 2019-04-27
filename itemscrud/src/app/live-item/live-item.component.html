@@ -1,40 +1,59 @@
+
+
 <div class = "container">
+
+  <app-navbar></app-navbar>
+  
   <h1 align="center">Live Auction</h1>
   <hr>
   <div class = "row">
       <div class="col-md-6" *ngIf="item && item.image[0]">
-          <img src="{{imageUrl}}{{item.image[0].path}}">
-          <h1>{{item.name}}</h1>
-          <p>{{item.desc}}</p>
+          
+          <div class="card mt-4">
+              <img class="card-img-top img-fluid" src="{{imageUrl}}{{item.image[0].path}}" alt="">
+              <div class="card-body">
+                <h3 class="card-title">{{item.name}}</h3>
+                <h4>${{item.bid_price.starting_bid}}</h4>
+                <span class="btn btn-outline-success">{{item.category}}</span>
+                <span *ngIf="!sold" class="btn btn-danger">Current Highest Bid: ${{highestBid}}</span>
+                <span *ngIf="sold" class="btn btn-danger">Sold: ${{winner.price}}</span>
+                <p class="card-text">{{item.desc}}</p>
+                
+              </div>
+            </div>
+            <!-- /.card -->
+
       </div>
 
         <div class="col-md-6">
-          <span class="label label-primary">
-            Total Users : {{totalUsers}}
-          </span>
-          <div class="row" *ngIf="end_time">
-            <countdown-timer (zeroTrigger)="timeOut()" [end]="end_time"></countdown-timer>
+          <button class="btn btn-secondary btn-block">
+            <b>Total Users : {{totalUsers}} </b>
+          </button>
+          <button *ngIf="end_time" class="btn btn-warning btn-block">
+                 <b>Time Remaining:  <countdown-timer (zeroTrigger)="timeOut()" [end]="end_time"></countdown-timer></b>      
+          </button>
+          <div *ngIf="sold">
+              <button class="btn btn-success btn-block">Winner: {{winner.user}}</button>
           </div>
           <div class="row">
-              <div #scrollMe style="overflow: scroll; height: 500px;">
-                  <ul *ngIf="logs">
-                    <li *ngFor="let log of logs">
-                      {{log.userId}} ----- {{log.bid}} 
+              <div #scrollMe style="overflow: scroll; height: 500px; width: 100%">
+                  <ul class="list-group" *ngIf="logs">
+                    <li class="list-group-item list-group-item-info" *ngFor="let log of logs">
+                      {{log.userId}} <span class="badge badge-pill badge-dark float-right">${{log.bid}} </span>
                     </li>
                   </ul>  
               </div>
           </div>
+          <br>
           <div *ngIf="!sold">
-              <div class="row">
-                  <button type="button" class="btn btn-dark" value="10" (click) = "addBid($event)">+10</button>
-                  <button type="button" class="btn btn-dark" value="20" (click) = "addBid($event)">+20</button>
-                  <button type="button" class="btn btn-dark" value="50" (click) = "addBid($event)">+50</button>
-                  <button type="button" class="btn btn-dark" value="100" (click) = "addBid($event)">+100</button>
+              <div class=" row d-flex justify-content-center">
+                  <button type="button" class="btn btn-dark px-3" value="10" (click) = "addBid($event)">+10</button>
+                  <button type="button" class="btn btn-dark px-3" value="20" (click) = "addBid($event)">+20</button>
+                  <button type="button" class="btn btn-dark px-3" value="50" (click) = "addBid($event)">+50</button>
+                  <button type="button" class="btn btn-dark px-3" value="100" (click) = "addBid($event)">+100</button>
                 </div>
           </div>
-          <div *ngIf="sold">
-            <h1>Winner is {{winner.user}} with bidding {{winner.price}}</h1>
-          </div>
+          
           
 
 

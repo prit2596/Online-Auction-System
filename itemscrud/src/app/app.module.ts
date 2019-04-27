@@ -29,6 +29,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './auth-guard-service.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { NavbarComponent } from './navbar/navbar.component';
+import { ProfileComponent } from './profile/profile.component';
 const routes: Routes = [
   {
     path: 'signup',
@@ -37,6 +39,11 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'editProfile',
@@ -91,7 +98,9 @@ const routes: Routes = [
     LiveItemComponent,
     SignupComponent,
     EditUserComponent,
-    LoginComponent
+    LoginComponent,
+    NavbarComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
