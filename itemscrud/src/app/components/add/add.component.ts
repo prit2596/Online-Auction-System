@@ -38,7 +38,7 @@ createForm() {
   	this.formData.append('start_time', start_time);
   	this.formData.append('end_time', end_time);
   	this.formData.append('starting_bid', starting_bid);
-    // console.log(category);
+    // //.log(category);
     this.formData.append('category', this.selectedCategory);
     this.additemservice.addAdItem(this.formData)
     
@@ -46,7 +46,7 @@ createForm() {
 }
 onFileChange(event) {
   let reader = new FileReader();
- 	console.log("change file")
+ 	//.log("change file")
   if(event.target.files && event.target.files.length) {
     const [file] = event.target.files;
     reader.readAsDataURL(file);
@@ -54,7 +54,7 @@ onFileChange(event) {
       this.angForm.patchValue({
         file: reader.result
       });
-      console.log(file)
+      // //.log(file)
       //this.formData = new FormData();
       // need to run CD since file load runs outside of zone
       this.formData.append('image', file)
@@ -65,16 +65,16 @@ onFileChange(event) {
 
 onStartTimeChange(event){
   let start_date = new Date(event.value).getTime();
-  console.log(event.value)
-  console.log("Start Time" + new Date(start_date) + "   ");
+  //.log(event.value)
+  //.log("Start Time" + new Date(start_date) + "   ");
   if(start_date < Date.now())
   {
-    console.log("True");
+    //.log("True");
     this.startDateerrorFlag = true;
   }
   else
   {
-  console.log("False");
+  //.log("False");
     this.startDateerrorFlag = false; 
   }
 }
@@ -84,7 +84,7 @@ onEndTimeChange(event){
   let end_date = new Date(event.value).getTime();
   
   let start_date = this.angForm.get("start_time").value;
-  console.log("Date" +start_date)
+  //.log("Date" +start_date)
   if(start_date == ""){
   this.endDateerrorFlag = true;
   }
@@ -93,12 +93,12 @@ onEndTimeChange(event){
   start_date = new Date(start_date).getTime();
   if(end_date < start_date)
   {
-    console.log("True");
+    //.log("True");
     this.endDateerrorFlag = true;
   }
   else
   {
-  console.log("False" + start_date);
+  //.log("False" + start_date);
     this.endDateerrorFlag = false; 
   }
   } 
@@ -106,27 +106,27 @@ onEndTimeChange(event){
 }
 
 getCat(event){
-  //console.log(event.target.value);
+  ////.log(event.target.value);
   let cat = event.target.value;
   if(cat == "new_cat" && !this.categoryFlag)
   {
-    console.log("here");
+    //.log("here");
     this.angForm.get("category").setValue('');
     this.categoryFlag = true;
   }
   else if(this.categoryFlag){
-    console.log(cat);
+    //.log(cat);
     //this.formData.append('category', cat);
     this.additemservice.addCategory({'name' : cat})
     .subscribe(
-      res=> {console.log("added-category" + cat); 
+      res=> {//.log("added-category" + cat); 
       this.additemservice.getCategory()
     .subscribe(res =>{
       this.category = res['categories'];
-      console.log(this.category);
+      //.log(this.category);
     });
     });
-    
+    this.selectedCategory = cat;
     this.categoryFlag = false;
   }
   else
@@ -144,7 +144,7 @@ getCat(event){
       this.additemservice.getCategory()
       .subscribe(res =>{
         this.category = res['categories'];
-        console.log(this.category);
+        //.log(this.category);
       }
       );
     }

@@ -55,7 +55,7 @@ export class UpdateComponent implements OnInit {
 
 onFileChange(event) {
   let reader = new FileReader();
- 	console.log("change file")
+ 	//.log("change file")
   if(event.target.files && event.target.files.length) {
     const [file] = event.target.files;
     reader.readAsDataURL(file);
@@ -63,7 +63,7 @@ onFileChange(event) {
       this.angForm.patchValue({
         file: reader.result
       });
-      console.log(file)
+      //.log(file)
       
       // need to run CD since file load runs outside of zone
       this.formData.append('image', file)
@@ -73,16 +73,16 @@ onFileChange(event) {
 }
 onStartTimeChange(event){
   let start_date = new Date(event.value).getTime();
-  console.log(event.value)
-  console.log("Start Time" + new Date(start_date) + "   ");
+  //.log(event.value)
+  //.log("Start Time" + new Date(start_date) + "   ");
   if(start_date < Date.now())
   {
-    console.log("True");
+    //.log("True");
     this.startDateerrorFlag = true;
   }
   else
   {
-  console.log("False");
+  //.log("False");
     this.startDateerrorFlag = false; 
   }
 }
@@ -92,7 +92,7 @@ onEndTimeChange(event){
   let end_date = new Date(event.value).getTime();
   
   let start_date = this.angForm.get("start_time").value;
-  console.log("Date" +start_date)
+  //.log("Date" +start_date)
   if(start_date == ""){
   this.endDateerrorFlag = true;
   }
@@ -101,40 +101,40 @@ onEndTimeChange(event){
   start_date = new Date(start_date).getTime();
   if(end_date < start_date)
   {
-    console.log("True");
+    //.log("True");
     this.endDateerrorFlag = true;
   }
   else
   {
-  console.log("False" + start_date);
+  //.log("False" + start_date);
     this.endDateerrorFlag = false; 
   }
   } 
   
 }
 getCat(event){
-  //console.log(event.target.value);
+  ////.log(event.target.value);
   let cat = event.target.value;
   if(cat == "new_cat" && !this.categoryFlag)
   {
-    console.log("here");
+    //.log("here");
     this.angForm.get("category").setValue('');
     this.categoryFlag = true;
   }
   else if(this.categoryFlag){
-    console.log(cat);
+    //.log(cat);
     //this.formData.append('category', cat);
     this.itemservice.addCategory({'name' : cat})
     .subscribe(
-      res=> {console.log("added-category" + cat); 
+      res=> {//.log("added-category" + cat); 
       this.itemservice.getCategory()
     .subscribe(res =>{
       this.category = res['categories'];
-      console.log(this.category);
+      //.log(this.category);
     });
     });
     //this.category = [];
-    
+    this.selectedCategory = cat;
     this.categoryFlag = false;
   }
   else
@@ -149,12 +149,12 @@ getCat(event){
 }
   ngOnInit() {
   //temp : any ={};
-    console.log(localStorage.getItem('admin'))
+    //.log(localStorage.getItem('admin'))
     if(localStorage.getItem('admin') == 'true'){
       this.itemservice.getCategory()
       .subscribe(res =>{
         this.category = res['categories'];
-        console.log("hello" + this.category);
+        //.log("hello" + this.category);
       });
       this.route.params.subscribe(params => {
       this.itemservice.getItem(params['id'])
@@ -168,9 +168,9 @@ getCat(event){
         this.angForm.get('start_time').setValue(new Date(res['items'].time.start_time));
         this.angForm.get('end_time').setValue(new Date(res['items'].time.end_time));
         this.angForm.get('starting_bid').setValue(res['items'].bid_price.starting_bid);
-      //console.log("here" +JSON.stringify(temp.items))
+      ////.log("here" +JSON.stringify(temp.items))
         })
-      //console.log(this.item);
+      ////.log(this.item);
       })
 
     }

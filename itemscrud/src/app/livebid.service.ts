@@ -11,12 +11,12 @@ export class LivebidService {
   private socket;
 
   constructor() {
-    console.log('in constructor');
+    //.log('in constructor');
     this.socket = io(this.url);
    }
 
   joinAuction(itemId, userId){
-    console.log('join_auction');
+    //.log('join_auction');
     var data = {
       'itemId': itemId,
       'userId': userId
@@ -70,7 +70,7 @@ export class LivebidService {
   }
 
   timeOut(itemId){
-    console.log('timeout in service');
+    //.log('timeout in service');
     var data = {
       'itemId': itemId
     }
@@ -87,7 +87,7 @@ export class LivebidService {
   }
 
   ngOnDestroy(){
-    console.log('inside destroy of service');
+    //.log('inside destroy of service');
     this.leaveAuction();
   }
 }

@@ -26,7 +26,7 @@ export class SoldItemsComponent implements OnInit {
       this.items.forEach(item => {
         this.categories.add(item.category);
       })
-      console.log(this.categories);
+      //.log(this.categories);
     });
   }
 
@@ -51,7 +51,7 @@ export class SoldItemsComponent implements OnInit {
         return item.category === selectedFilter;
       })
     }
-    console.log(this.items);
+    //.log(this.items);
   }
 
 }

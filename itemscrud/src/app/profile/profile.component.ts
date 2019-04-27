@@ -22,8 +22,8 @@ export class ProfileComponent implements OnInit {
         .subscribe(res => {
           this.itemsBought.push(res.items)
         })
-        console.log(this.itemsBought);
-        console.log(this.user)
+        //.log(this.itemsBought);
+        //.log(this.user)
       })
     })
   }

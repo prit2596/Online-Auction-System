@@ -1,35 +1,41 @@
-<div class="container mt-5">
-  <h1 style="text-align:center">
-    Login
-  </h1>
-  <div class="login text--center">
-    <form [formGroup]="loginForm" class="login-container" (ngSubmit)="login()">
-  
-      <p [ngClass]="{ 'has-error': isSubmitted && formControls.email.errors }">
-        <input type="email" placeholder="Email" formControlName="email">
-      </p>
-  
-      <div *ngIf="isSubmitted && formControls.email.errors" class="help-block">
-        <div *ngIf="formControls.email.errors.required">Email is required</div>
-      </div>
-  
-      <p [ngClass]="{ 'has-error': isSubmitted && formControls.password.errors }">
-        <input type="password" placeholder="Password" formControlName="password">
-      </p>
-  
-      <div *ngIf="isSubmitted && formControls.password.errors" class="help-block">
-        <div *ngIf="formControls.password.errors.required">Password is required</div>
-      </div>
-  
-      <p>
-        <input type="submit" value="Log in">
-      </p>
-      <p>
-        <a (click)="signup()">Sign Up</a>
-      </p>
-    </form>
-  </div>
-  </div>
+<div class="container">
+  <div class="row align-items-center mt-50">
+    <div class="col-md-6 mx-auto">
+      <div class="card w-100 border" style="box-shadow: 0.5px 1.5px 3px rgba(0,0,0,0.1);">
+        <h1 class="text-center">
+          Login
+        </h1>
+        <div class="card-body">
+          <!-- <div class="login text--center"> -->
+          <form [formGroup]="loginForm" class="login-container" (ngSubmit)="login()">
+
+            <div [ngClass]="{ 'has-error': isSubmitted && formControls.email.errors }">
+              <input class="border rounded px-20 w-100" type="email" placeholder="Email" formControlName="email">
 
 
-  
+              <div *ngIf="isSubmitted && formControls.email.errors" class="help-block alert alert-danger">
+                <div *ngIf="formControls.email.errors.required">Email is required</div>
+              </div>
+
+            </div>
+            <br />
+            <div [ngClass]="{ 'has-error': isSubmitted && formControls.password.errors }">
+              <input class="border rounded px-20 w-100" type="password" placeholder="Password"
+                formControlName="password">
+
+              <div *ngIf="isSubmitted && formControls.password.errors" class="help-block alert alert-danger">
+                <div *ngIf="formControls.password.errors.required">Password is required</div>
+              </div>
+            </div>
+
+            <p>
+              <button class="btn btn-primary d-block w-100" type="submit" (click)="login">Login</button><br />
+              <a routerLink="/signup">Sign up</a>
+            </p>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

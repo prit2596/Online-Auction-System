@@ -22,7 +22,7 @@ export class EditUserComponent implements OnInit {
     this.userService.getUserById(localStorage.getItem('userId'))
     .subscribe(res => {
       this.user = res.user;
-      //console.log(this.user.first_name)
+      ////.log(this.user.first_name)
       this.editForm.get('first_name').setValue(this.user.first_name);
       this.editForm.get('last_name').setValue(this.user.last_name);
       this.editForm.get('address').setValue(this.user.address);

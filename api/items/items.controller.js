@@ -19,7 +19,7 @@ exports.createItem = [
 	check('starting_bid').withMessage('Starting Bid required'),
 	
 	(req, res, next) => {
-		console.log("Here")
+		//.log("Here")
 		const error = validationResult(req);
 		if (!error.isEmpty()) {
 			return res.json({
@@ -27,12 +27,12 @@ exports.createItem = [
 			})
 		}
 		else {
-			//console.log(Date.now());
+			////.log(Date.now());
 			var start_time = new Date(req.body.start_time).getTime();
 			var end_time = new Date(req.body.end_time).getTime();
-			console.log(start_time + "  " + end_time);
-			console.log(req.body);
-			//console.log(start_time +" "+ end_time);
+			//.log(start_time + "  " + end_time);
+			//.log(req.body);
+			////.log(start_time +" "+ end_time);
 			if (start_time <= Date.now()) {
 				res.json({
 					error: "Start time cannot be smaller than present time"
@@ -109,7 +109,7 @@ exports.getById = function (req, res, next) {
  				error: err
  			})
  		}
- 		//console.log(items)
+ 		////.log(items)
  		return res.json({
  			items: items
  		})
@@ -139,7 +139,7 @@ exports.updateItem = [
 				}
 				else {
 					item.image.push({path: req.file.path})
-					//console.log(item.image)
+					////.log(item.image)
 					var newItem = {
 						name: req.body.name,
 						desc: req.body.desc,
@@ -153,14 +153,14 @@ exports.updateItem = [
 							starting_bid: req.body.starting_bid
 						}
 					}
-					console.log("Upate Item" + JSON.stringify(newItem))
+					//.log("Upate Item" + JSON.stringify(newItem))
 					Items.update({ _id: req.params.id }, newItem, function (err, user) {
 						if (err) {
 							return next(res.json({
 								error: err
 							}));
 						}
-						console.log("successfully")
+						//.log("successfully")
 						return next(res.json({
 							message: "Item updated successfully"
 						}));
@@ -209,20 +209,22 @@ exports.getStartBid = function(itemId, cb){
 exports.itemSold = function(data){
 	Items.getById({_id: data.itemId}, function(err, item){
 		if(err) throw err;
-		console.log(JSON.stringify(item));
+		//.log(JSON.stringify(item));
 		item.bid_price.final_price = data.price;
 		item.sold = true;
 
 		Items.update({_id: data.itemId}, item, function(err, updatedItem){
 			if(err) throw err;
-			console.log(JSON.stringify(updatedItem));
+			//.log(JSON.stringify(updatedItem));
 		});
 	});
 }
 
 exports.checkItemSold = function(data, cb){
-	Items.getById({itemId: data.itemId}, function(err, item){
+	Items.getById({_id: data}, function(err, item){
 		if(err) throw err;
+		//.log("ItemSold Flag" + data);
+		//.log("ItemSold Flag" + item.sold);
 		cb(null, item.sold);
 	})
 }
@@ -234,12 +236,12 @@ exports.getLiveItems = function(req, res, next){
 		archive: false,
 		sold: false
 	}
-	//console.log(new Date())
+	////.log(new Date())
 
-	//console.log(Date.now());
+	////.log(Date.now());
 	
 	Items.get(query, function(err, items){
-	//	console.log(items);
+	//	//.log(items);
 		if(err){
 			res.json({
 				error: err
@@ -277,9 +279,9 @@ exports.getUpcomingItems= function(req, res, next){
 		archive: false,
 		sold: false
 	}
-	//console.log(new Date())
+	////.log(new Date())
 	Items.get(query, function(err, items){
-		console.log(items);
+		//.log(items);
 		if(err){
 			res.json({
 				error: err

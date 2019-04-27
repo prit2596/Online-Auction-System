@@ -16,8 +16,8 @@ export class UserServiceService {
 
 
   addUser(formData: FormData): any{
-    //console.log(formData);
-    //console.log("in service class");
+    ////.log(formData);
+    ////.log("in service class");
     return this.http.post<any>(`${this.usersUrl}/create`,formData);
   }
 

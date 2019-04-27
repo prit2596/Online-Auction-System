@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 
 export class ViewComponent implements OnInit {
 
+  startTime: any;
   items: ItemModel[];
   imageUrl = 'http://localhost:4000/'
   adminFlag = false;
@@ -22,7 +23,7 @@ export class ViewComponent implements OnInit {
 
   deleteItem(id) {
     this.itemservice.deleteItem(id).subscribe(res => {
-      console.log('Deleted');
+      //.log('Deleted');
       this.router.navigateByUrl('');
     });
   }
@@ -38,7 +39,7 @@ export class ViewComponent implements OnInit {
     {
       this.orignalItems = data['items']
       this.items = data["items"]
-
+     
       this.categories = new Set();
       this.items.forEach(item => {
         this.categories.add(item.category);
@@ -67,6 +68,6 @@ export class ViewComponent implements OnInit {
         return item.category === selectedFilter;
       })
     }
-    console.log(this.items);
+    //.log(this.items);
   }
 }

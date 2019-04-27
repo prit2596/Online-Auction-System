@@ -19,16 +19,16 @@ export class LiveAuctionComponent implements OnInit {
   ngOnInit() {
     this.liveService.getLiveItems()
     .subscribe(res => {
-      console.log(res.items)
+      //.log(res.items)
       this.orignalItems = res.items;
       this.items = res.items;
-      console.log(this.items.length)
+      //.log(this.items.length)
       
       this.categories = new Set();
       this.items.forEach(item => {
         this.categories.add(item.category);
       })
-      console.log(this.categories);
+      //.log(this.categories);
     });
 
     
@@ -54,6 +54,6 @@ export class LiveAuctionComponent implements OnInit {
         return item.category === selectedFilter;
       })
     }
-    console.log(this.items);
+    //.log(this.items);
   }
 }

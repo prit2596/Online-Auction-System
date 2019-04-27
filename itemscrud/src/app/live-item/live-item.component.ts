@@ -18,7 +18,7 @@ export class LiveItemComponent implements OnInit {
   stop = false;
   totalUsers = 0;
   item: any = {};
-  sold = false;
+  sold: any;
   winner: any = {};
   imageUrl: String = 'http://localhost:4000/';
   logs = [];
@@ -33,20 +33,21 @@ export class LiveItemComponent implements OnInit {
 
   ngOnInit() {
     this.liveBidService = new LivebidService();
+    this.sold = false;
     this.userId = localStorage.getItem('userId')
     this.scrollToBottom();
     this.route.params.subscribe(params => {
       this.itemservice.getItem(params['id'])
       .subscribe(res => {
         this.item = res['items'];
-        console.log(this.item)
+        //.log(this.item)
         this.end_time = new Date(this.item.time.end_time);
       });
 
       this.liveBidService.joinAuction(params['id'], this.userId);
       this.liveBidService.totalUsers()
       .subscribe((data) => {
-        console.log('here new users');
+        //.log('here new users');
         this.totalUsers = data.numberOfUsers;
       });
 
@@ -59,15 +60,17 @@ export class LiveItemComponent implements OnInit {
 
       this.liveBidService.postedBid()
       .subscribe((data) => {
-        console.log('new posted bid');
+        //.log('new posted bid');
         this.logs.push(data.user)
         this.highestBid = data.user.bid;
       })
 
       this.liveBidService.winner()
       .subscribe((data) => {
+        //.log("winner");
         this.winner = data;
         this.sold = true;
+        //.log(this.sold);
       })
     })
   }
@@ -85,19 +88,19 @@ export class LiveItemComponent implements OnInit {
 
   addBid(event){
     var bid = event.target.value;
-    console.log(bid);
+    //.log(bid);
     this.liveBidService.addBid(this.item._id, this.userId, bid);
   }
 
   timeOut(){
     if(!this.stop){
-      console.log('timeout in Component');
+      //.log('timeout in Component');
       this.liveBidService.timeOut(this.item._id);  
       this.stop = true;
     }
   }
   ngOnDestroy(){
-    console.log('onDestroy')
+    //.log('onDestroy')
     this.liveBidService.ngOnDestroy();
     //this.liveBidService.leaveAuction();
   }

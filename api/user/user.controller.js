@@ -27,7 +27,7 @@ exports.createUser = [
     check('password').withMessage('Password Empty'),
     check('confirm_password', 'Confirm Password Empty'),
     (req, res, next) => {
-        console.log('userController_create');
+        //.log('userController_create');
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.json({
@@ -44,7 +44,7 @@ exports.createUser = [
         else {
 
             Users.getByEmail({ email: req.body.email }, function (err, user) {
-                console.log(user + "before");
+                //.log(user + "before");
                 if (err) {
                     return res.json({
                         error: err
@@ -57,7 +57,7 @@ exports.createUser = [
                     });
                 }
                 else {
-                    console.log(user);
+                    //.log(user);
                     var hashPassword = bcrypt.hashSync(req.body.password, 10);
 
                     var user = {
@@ -77,7 +77,7 @@ exports.createUser = [
                         }
 
                         //creating a token and sending it back
-                        console.log('here');
+                        //.log('here');
                         var token = jwt.sign({ id: user.email }, config.KEY, {
                             expiresIn: 86400 // expires in 24 hours
                         });
@@ -210,7 +210,7 @@ exports.updateItems = function (data) {
 
 exports.checkUser = function (req, res) {
     // res.status(200).send(user);
-    console.log(req.userId);
+    //.log(req.userId);
     Users.getByEmail({ email: req.userId }, function (err, user) {
         if (err) return res.status(500).send("There was a problem finding the user.");
         if (!user) return res.status(404).send("No user found.");
@@ -233,9 +233,9 @@ exports.verifyToken = function (req, res, next) {
 }
 
 exports.login = function (req, res) {
-    // console.log(req.body);
+    // //.log(req.body);
     Users.getByEmail({ email: req.body.email }, function (err, user) {
-        console.log(user);
+        //.log(user);
         if (err) return res.status(500).send({message: 'Error on the server.'});
         if (!user) return res.status(200).send({message: 'Invalid username or password'});
         var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);

@@ -5,7 +5,7 @@ var {check, validationResult} = require('express-validator/check');
 exports.createCategory = [
     check('name').withMessage('Category Name required'),
     (req, res, next) => {
-        console.log(req.body);
+        //console.log(req.body);
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             return res.json({

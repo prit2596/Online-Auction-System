@@ -54,7 +54,7 @@ export class SignupComponent implements OnInit {
   onFileChange(event) {
     
     let reader = new FileReader();
-     console.log("change file")
+     //.log("change file")
     if(event.target.files && event.target.files.length) {
       const [file] = event.target.files;
       reader.readAsDataURL(file);
@@ -62,7 +62,7 @@ export class SignupComponent implements OnInit {
         this.signUpForm.patchValue({
           file: reader.result
         });
-        console.log(file)
+        //.log(file)
         // need to run CD since file load runs outside of zone
         this.formData.append('profilePic', file)
         this.cd.markForCheck();
@@ -77,11 +77,11 @@ export class SignupComponent implements OnInit {
     .subscribe(res => {
       if(res.user === null){
         this.userExistsFlag = false;
-        //console.log("null");
+        ////.log("null");
       }
       else{
         this.userExistsFlag = true;
-        //console.log("user exists");
+        ////.log("user exists");
       }
     })
   }

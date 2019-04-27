@@ -27,7 +27,7 @@
     </div>
     <div class="row"> 
       <div class="card m-4" *ngFor = "let item of items | paginate: { id: 'view',itemsPerPage: 3,currentPage: p}" style="width: 18rem;">
-        <img class="card-img-top" src="{{imageUrl}}{{item.image[0].path}}" alt="Card image cap" style="height: 250px;">
+        <img class="card-img-top" src="{{imageUrl}}{{item.image[item.image.length-1].path}}" alt="Card image cap" style="height: 250px;">
         <div class="card-body">
           <h5 class="card-title">{{item.name}}</h5>
           <hr>
@@ -35,7 +35,9 @@
           <hr>
           <p class="card-text">{{item.desc}}</p>
           <hr>
-          <p class="card-text"><button class="btn btn-warning">Start Time: {{item.time.start_time}}</button></p>
+          <p class="card-text"><button class="btn btn-warning">Start Time: {{item.time.start_time | date:'E dd MMMM, yyyy HH:mm:ss a'}}</button></p>
+          <!-- <input type="date" id="start" name="trip-start"
+       value={{item.time.start_time}} disabled/> -->
           <a *ngIf = "adminFlag" [routerLink]="['/update', item._id]" href="#" class="btn btn-success d-flex justify-content-center">Update</a>
           <a *ngIf = "adminFlag" (click)="deleteItem(item._id)" href="#" class="btn btn-danger d-flex justify-content-center">Delete</a>
         </div>
