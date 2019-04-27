@@ -16,7 +16,7 @@ export class LiveItemComponent implements OnInit {
   userId: String;
   end_time : any;
   stop = false;
-  totalUsers = 0;
+  totalUsers = 1;
   item: any = {};
   sold: any;
   winner: any = {};
