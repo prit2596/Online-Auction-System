@@ -36,7 +36,8 @@
             <hr>
             <p class="card-text"></p><span class ="label label-primary"><b>Starting Bid:  </b><button class="btn btn-success">  ${{item.bid_price.starting_bid}}</button></span>
             <hr>
-            <p class="card-text">{{item.desc}}</p>
+            <span class="btn btn-outline-success">{{item.category}}</span>
+            <hr>
             <a [routerLink]="['/liveItem', item._id]" class="btn btn-primary d-flex justify-content-center">Enter Auction</a>
           </div>
       </div>

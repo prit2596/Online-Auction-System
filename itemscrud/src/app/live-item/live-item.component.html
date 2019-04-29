@@ -10,13 +10,17 @@
       <div class="col-md-6" *ngIf="item && item.image[0]">
           
           <div class="card mt-4">
-              <img class="card-img-top img-fluid" src="{{imageUrl}}{{item.image[0].path}}" alt="">
-              <div class="card-body">
+            <div class="card-body">
+                <img class="card-img-top img-fluid" src="{{imageUrl}}{{item.image[0].path}}" alt="">
                 <h3 class="card-title">{{item.name}}</h3>
                 <h4>${{item.bid_price.starting_bid}}</h4>
                 <span class="btn btn-outline-success">{{item.category}}</span>
                 <span *ngIf="!sold" class="btn btn-danger">Current Highest Bid: ${{highestBid}}</span>
                 <span *ngIf="sold" class="btn btn-danger">Sold: ${{winner.price}}</span>
+                <br>
+                <hr>
+                <h3>Description: </h3>
+                <br>
                 <p class="card-text">{{item.desc}}</p>
                 
               </div>

@@ -31,9 +31,9 @@
         <div class="card-body">
           <h5 class="card-title">{{item.name}}</h5>
           <hr>
-          <p class="card-text"></p><span class ="label label-primary">${{item.bid_price.starting_bid}}</span>
+          <h5>Starting Bid: ${{item.bid_price.starting_bid}}</h5>
           <hr>
-          <p class="card-text">{{item.desc}}</p>
+          <span class="btn btn-outline-success">{{item.category}}</span>
           <hr>
           <p class="card-text"><button class="btn btn-warning">Start Time: {{item.time.start_time | date:'E dd MMMM, yyyy HH:mm:ss a'}}</button></p>
           <!-- <input type="date" id="start" name="trip-start"
@@ -43,5 +43,5 @@
         </div>
       </div>          
     </div>
-    <pagination-controls class="d-flex justify-content-center" id="view" (pageChange)="p = $event"></pagination-controls>
+    <pagination-controls class="d-flex justify-content-center" id = 'view' (pageChange)="p = $event"></pagination-controls>
 </div>
