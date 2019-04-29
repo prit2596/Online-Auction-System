@@ -26,7 +26,7 @@
             </div>
     </div>
     <div class="row"> 
-      <div class="card m-4" *ngFor = "let item of items | paginate: { id: 'view',itemsPerPage: 3,currentPage: p}" style="width: 18rem;">
+      <div class="card m-4" *ngFor = "let item of items | paginate: {id:'view',itemsPerPage: 3,currentPage: p}" style="width: 18rem;">
         <img class="card-img-top" src="{{imageUrl}}{{item.image[item.image.length-1].path}}" alt="Card image cap" style="height: 250px;">
         <div class="card-body">
           <h5 class="card-title">{{item.name}}</h5>
@@ -43,5 +43,5 @@
         </div>
       </div>          
     </div>
-    <pagination-controls class="d-flex justify-content-center" id = 'view' (pageChange)="p = $event"></pagination-controls>
+    <pagination-controls class="d-flex justify-content-center" id="view"  (pageChange)="p=$event"></pagination-controls>
 </div>
